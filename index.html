@@ -1,0 +1,2450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Practice 360">
+<meta name="format-detection" content="telephone=no">
+<meta name="robots" content="noindex, nofollow">
+<title>ALASTIN Practice 360° Phone Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#3C2F55; --purple-deep:#241B36; --purple-soft:#6B5C86;
+  --accent:#7B6BA0; --accent-deep:#5B4C7D;
+  --bg:#F1EFF2; --bg2:#E3E0E5;
+  --ink:#1E1E1E; --ink-soft:#585858; --mut:#6F7278; --gray-soft:#A4A8A9;
+  --line:#E3E0E5; --card:#ffffff; --card-line:#EAE7EE;
+  --alert:#700002; --alert-bg:#FBF4F4;
+  --lilac:#C2BACE; --lilac-soft:#E3E0E5;
+  --seg-new:#9A93AC; --seg-growth:#6B5C86; --seg-risk:#700002; --seg-champ:#3C2F55;
+  --good:#4C6B58;
+  --fs:1;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:'Figtree','Helvetica Neue',Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 700px at 12% -10%, #fff 0%, rgba(255,255,255,0) 55%),
+    radial-gradient(1000px 800px at 110% 120%, #E3E0E5 0%, rgba(227,224,229,0) 60%),
+    linear-gradient(160deg,var(--bg) 0%, var(--bg2) 100%);
+  color:var(--ink);
+  min-height:100%;
+  -webkit-font-smoothing:antialiased;
+}
+.display{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55;
+  background-image:linear-gradient(rgba(60,47,85,.05) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(60,47,85,.05) 1px,transparent 1px);
+  background-size:46px 46px;}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:40px 28px 64px;
+  display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:54px;align-items:start}
+
+/* ---------------- Console ---------------- */
+.console{position:sticky;top:40px;order:2}
+.console .kicker{font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--purple);
+  text-transform:uppercase;display:inline-block;background:#fff;border:1px solid var(--line);
+  padding:7px 13px;border-radius:9px}
+.console h1{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-size:36px;font-weight:400;line-height:1.1;margin:18px 0 8px;letter-spacing:0}
+.console h1 .hl{color:var(--purple)}
+.console p.lede{font-size:15px;color:var(--ink-soft);line-height:1.55;max-width:46ch}
+.panel{background:rgba(255,255,255,.74);backdrop-filter:blur(6px);border:1px solid var(--line);
+  border-radius:18px;padding:18px 18px 20px;margin-top:22px;box-shadow:0 18px 40px -28px rgba(36,27,54,.45)}
+.panel h2{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--mut);font-weight:700;margin-bottom:12px}
+.ctl-label{font-size:12.5px;font-weight:600;color:var(--ink-soft);margin:14px 0 7px}
+.ctl-label:first-of-type{margin-top:0}
+.seg-row,.role-row{display:flex;flex-wrap:wrap;gap:7px}
+.chip{font-family:inherit;font-size:12.5px;font-weight:600;border:1px solid var(--line);background:#fff;
+  color:var(--ink-soft);padding:8px 12px;border-radius:11px;cursor:pointer;transition:.16s;line-height:1}
+.chip:hover{border-color:var(--purple-soft);color:var(--purple)}
+.chip[aria-pressed="true"]{background:var(--purple);border-color:var(--purple);color:#fff}
+.chip.seg[aria-pressed="true"][data-seg="new"]{background:var(--seg-new);border-color:var(--seg-new)}
+.chip.seg[aria-pressed="true"][data-seg="growth"]{background:var(--seg-growth);border-color:var(--seg-growth)}
+.chip.seg[aria-pressed="true"][data-seg="risk"]{background:var(--seg-risk);border-color:var(--seg-risk)}
+.chip.seg[aria-pressed="true"][data-seg="champ"]{background:var(--seg-champ);border-color:var(--seg-champ)}
+.notes{margin-top:18px;border-top:1px dashed var(--line);padding-top:14px}
+.notes li{list-style:none;font-size:12.5px;color:var(--ink-soft);line-height:1.5;padding-left:20px;position:relative;margin-bottom:8px}
+.notes li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:3px;
+  background:linear-gradient(135deg,var(--accent),var(--purple))}
+.reset{margin-top:16px;width:100%;font-family:inherit;font-size:13px;font-weight:700;color:var(--purple);
+  background:#fff;border:1.5px solid #DEDAE6;border-radius:12px;padding:11px;cursor:pointer;transition:.16s}
+.reset:hover{background:#F8F7FA;border-color:var(--purple)}
+.disclaimer{font-size:11px;color:var(--mut);line-height:1.5;margin-top:18px}
+
+/* ---------------- Phone ---------------- */
+.stage{order:1;display:flex;justify-content:center}
+@media (max-height:900px){.wrap{padding-top:22px;padding-bottom:28px}.console{top:22px}}
+.phone{position:relative;width:390px;border-radius:52px;background:#1E1B26;
+  /* the phone must fit the browser window, or the bottom bar — tab bar, save
+     bar, or the SMS composer holding the reply chips — falls below the fold
+     and the demo looks broken. .screen is a flex column, so losing height
+     just shortens the scrolling area. */
+  height:830px; height:min(830px, calc(100vh - 76px)); height:min(830px, calc(100dvh - 76px)); min-height:560px;
+  padding:13px;box-shadow:0 50px 90px -40px rgba(30,27,38,.6),0 0 0 2px rgba(255,255,255,.04) inset;
+  flex:0 0 auto}
+.screen{position:relative;width:100%;height:100%;background:#fff;border-radius:40px;overflow:hidden;
+  display:flex;flex-direction:column;font-size:calc(15px*var(--fs))}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:140px;height:26px;
+  background:#1E1B26;border-radius:0 0 18px 18px;z-index:40}
+.status{display:flex;align-items:center;justify-content:space-between;padding:12px 24px 6px;
+  font-size:calc(13px*var(--fs));font-weight:600;color:#1E1E1E;flex:0 0 auto}
+.status .dots{display:flex;align-items:center;gap:5px}
+.status .bar{width:17px;height:11px;border:1.5px solid #1E1E1E;border-radius:3px;position:relative}
+.status .bar::after{content:"";position:absolute;inset:1.5px;right:5px;background:#1E1E1E;border-radius:1px}
+.sig{width:16px;height:11px;background:
+  linear-gradient(to right,#1E1E1E 0 3px,transparent 3px 4px,#1E1E1E 4px 7px,transparent 7px 8px,#1E1E1E 8px 11px,transparent 11px 12px,#1E1E1E 12px 16px)}
+
+/* app header */
+.appbar{flex:0 0 auto;padding:6px 20px 12px;border-bottom:1px solid #EAE7EE;background:#fff;z-index:20}
+.brand{display:flex;flex-direction:column;align-items:center;gap:1px;text-align:center}
+.wordmark{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-weight:500;letter-spacing:.22em;text-indent:.22em;font-size:calc(19px*var(--fs));color:var(--purple);line-height:1;text-transform:uppercase}
+.wordmark .deg{color:var(--accent)}
+.tag{font-size:calc(9.5px*var(--fs));color:var(--mut);font-weight:500;letter-spacing:.13em;text-transform:uppercase;margin-top:3px}
+.appbar-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.prov-pill{font-size:calc(11.5px*var(--fs));font-weight:600;color:var(--purple);border:1px solid var(--card-line);
+  background:#F8F7FA;border-radius:20px;padding:4px 12px}
+.icon-btn{width:34px;height:34px;border-radius:11px;border:1px solid var(--line);background:#fff;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-soft);transition:.15s}
+.icon-btn:hover{border-color:var(--purple-soft);color:var(--purple)}
+.specialty{font-size:calc(11px*var(--fs));color:var(--purple);font-weight:600;display:flex;align-items:center;gap:6px;margin-top:6px}
+.specialty .d{width:6px;height:6px;border-radius:50%;background:var(--purple)}
+
+/* scroll body */
+.body{flex:1 1 auto;overflow-y:auto;overflow-x:hidden;background:#fff;-webkit-overflow-scrolling:touch}
+.body::-webkit-scrollbar{width:0}
+
+/* greeting */
+.greet{margin:14px 20px 4px;border-radius:18px;padding:15px 16px;display:flex;gap:12px;align-items:center;color:#fff;
+  background:linear-gradient(120deg,#56466F,var(--purple-deep))}
+.greet .av{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center;font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-weight:600;font-size:calc(16px*var(--fs))}
+.greet .t1{font-weight:700;font-size:calc(15px*var(--fs));line-height:1.2}
+.greet .t2{font-size:calc(11.5px*var(--fs));opacity:.92;margin-top:2px}
+
+/* identity strip */
+.idstrip{margin:12px 20px 2px;border:1px solid var(--card-line);border-radius:16px;padding:13px 14px;display:flex;gap:13px;align-items:center}
+.idring{position:relative;width:58px;height:58px;flex:0 0 auto}
+.idring .mono{position:absolute;inset:0;display:grid;place-items:center;font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-size:calc(19px*var(--fs));font-weight:600;color:var(--purple)}
+.idmeta b{font-size:calc(13.5px*var(--fs));font-weight:700;display:block;line-height:1.15}
+.idmeta span{font-size:calc(11px*var(--fs));color:var(--mut)}
+.idtags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.minitag{font-size:calc(9.5px*var(--fs));font-weight:600;letter-spacing:.02em;padding:3px 8px;border-radius:14px;border:1px solid var(--line);background:#F9F8FB;color:var(--ink-soft)}
+.minitag.gold{background:#F1EEF6;border-color:#DCD6E8;color:#4E4170}
+.minitag.risk{background:var(--alert-bg);border-color:#E9CBCB;color:#5A0002}
+
+/* personal message */
+.pmsg-label{font-size:calc(11.5px*var(--fs));font-weight:700;padding:16px 20px 0}
+.pmsg{margin:8px 20px 2px;border-radius:15px;padding:13px 14px;display:flex;gap:11px;align-items:flex-start;
+  border:1px solid var(--card-line)}
+.pmsg .ic{width:28px;height:28px;border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:#fff}
+.pmsg .ic svg{width:15px;height:15px}
+.pmsg p{font-size:calc(12.5px*var(--fs));color:var(--ink-soft);line-height:1.42;font-weight:500}
+
+/* snapshot stats */
+.snap{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;padding:14px 18px 4px}
+.snap .s{border:1px solid var(--card-line);border-radius:14px;padding:11px 8px;text-align:center;background:#FAF9FB}
+.snap .s .v{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-size:calc(21px*var(--fs));font-weight:600;line-height:1}
+.snap .s .l{font-size:calc(9.5px*var(--fs));color:var(--ink-soft);margin-top:5px;line-height:1.2}
+.snap .s .d{font-size:calc(9px*var(--fs));margin-top:3px;font-weight:600}
+.snap .s .d.up{color:var(--good)} .snap .s .d.down{color:var(--alert)} .snap .s .d.flat{color:var(--mut)}
+
+/* section label */
+.sec{font-size:calc(11.5px*var(--fs));font-weight:700;color:var(--purple);padding:18px 22px 9px;letter-spacing:.02em}
+
+/* tiles — 3-col module grid (9 tiles, chosen by role + segment) */
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:2px 18px 6px}
+.tile{background:#fff;border:1px solid var(--card-line);border-radius:16px;padding:13px 6px 12px;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;text-align:center;cursor:pointer;transition:.16s;position:relative;min-height:84px}
+.tile:hover{border-color:var(--purple-soft);box-shadow:0 10px 22px -16px rgba(36,27,54,.5);transform:translateY(-2px)}
+.tile .ic{width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:var(--purple);flex:none}
+.tile .ic svg{width:24px;height:24px;stroke:var(--purple);fill:none;stroke-width:1.7}
+.tile span{font-size:calc(10.5px*var(--fs));font-weight:600;color:#3A3742;line-height:1.18}
+.tile .star{position:absolute;top:7px;right:8px;font-size:calc(9px*var(--fs));color:var(--accent)}
+
+/* CTA */
+.cta{margin:12px 20px 6px;border:1.5px solid var(--purple);color:var(--purple);font-weight:700;font-size:calc(13.5px*var(--fs));
+  text-align:center;border-radius:24px;padding:12px;cursor:pointer;background:#fff;transition:.16s}
+.cta:hover{background:var(--purple);color:#fff}
+.cta.solid{background:var(--purple);color:#fff}
+.cta.solid:hover{background:var(--purple-deep)}
+
+/* tab bar */
+.tabbar{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 0 12px;
+  border-top:1px solid #EAE7EE;background:#fff;z-index:20}
+.tb{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  border:none;transition:.16s;color:#fff}
+.tb svg{width:19px;height:19px}
+.tb.tt{background:var(--purple)} .tb.call{background:#56466F}
+.tb:hover{filter:brightness(1.07);transform:translateY(-1px)}
+.tb-ai{display:flex;align-items:center;gap:8px;font-weight:700;font-size:calc(13px*var(--fs));color:var(--purple-deep);
+  border:2px solid transparent;border-radius:24px;padding:10px 18px;cursor:pointer;
+  background:linear-gradient(#fff,#fff) padding-box,linear-gradient(120deg,var(--accent),var(--purple)) border-box;transition:.16s}
+.tb-ai:hover{box-shadow:0 8px 20px -12px rgba(60,47,85,.6)}
+.tb-ai svg{width:16px;height:16px}
+
+
+/* role select */
+.role-screen{flex:1;display:flex;flex-direction:column;padding:8px 22px 22px;overflow-y:auto}
+.role-hero{padding:18px 0 6px}
+.role-hero h2{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-size:calc(25px*var(--fs));font-weight:400;line-height:1.18;letter-spacing:0}
+.role-hero h2 .hl{color:var(--purple)}
+.role-hero p{font-size:calc(13px*var(--fs));color:var(--ink-soft);margin-top:8px;line-height:1.5}
+.role-list{margin-top:16px;display:flex;flex-direction:column;gap:11px}
+.role-card{display:flex;align-items:center;gap:13px;border:1px solid var(--card-line);border-radius:16px;
+  padding:15px 15px;cursor:pointer;background:#fff;transition:.16s}
+.role-card:hover{border-color:var(--purple);box-shadow:0 12px 26px -18px rgba(36,27,54,.6);transform:translateY(-2px)}
+.role-card .ric{width:42px;height:42px;border-radius:13px;background:#F3F1F6;display:flex;align-items:center;justify-content:center;
+  color:var(--purple);flex:0 0 auto}
+.role-card .ric svg{width:22px;height:22px;stroke:var(--purple);fill:none;stroke-width:1.8}
+.role-card .rt b{font-size:calc(14.5px*var(--fs));font-weight:700;display:block}
+.role-card .rt span{font-size:calc(11.5px*var(--fs));color:var(--mut)}
+.role-card .arr{margin-left:auto;color:var(--mut)}
+
+/* detail */
+.detail{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#fff}
+.dhead{flex:0 0 auto;display:flex;align-items:center;gap:12px;padding:10px 16px 12px;border-bottom:1px solid #EAE7EE}
+.back{width:34px;height:34px;border-radius:11px;border:1px solid var(--line);background:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;color:var(--ink-soft);transition:.15s;flex:0 0 auto}
+.back:hover{border-color:var(--purple);color:var(--purple)}
+.dhead .dt{font-size:calc(15px*var(--fs));font-weight:700}
+.dhead .dt small{display:block;font-size:calc(10.5px*var(--fs));color:var(--mut);font-weight:500}
+.dbody{flex:1;overflow-y:auto;padding:18px 20px 24px}
+.dbody::-webkit-scrollbar{width:0}
+.stat-row{display:flex;gap:11px;margin-bottom:16px}
+.stat{flex:1;border:1px solid var(--card-line);border-radius:15px;padding:14px 10px;text-align:center;background:#FAF9FB}
+.stat .big{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-size:calc(27px*var(--fs));font-weight:600;color:var(--purple);line-height:1}
+.stat .big.gold{color:var(--accent)}
+.stat .lbl{font-size:calc(10px*var(--fs));color:var(--ink-soft);margin-top:6px;line-height:1.25}
+.stat .vs{font-size:calc(9.5px*var(--fs));color:var(--mut);margin-top:4px}
+.dbody h3{font-size:calc(13.5px*var(--fs));font-weight:700;margin:18px 0 8px;color:var(--ink)}
+.dbody h3:first-child{margin-top:0}
+.dbody p{font-size:calc(12.5px*var(--fs));color:var(--ink-soft);line-height:1.55;margin-bottom:10px}
+.kv{border:1px solid var(--card-line);border-radius:14px;overflow:hidden;margin-bottom:14px}
+.kv div{display:flex;justify-content:space-between;gap:12px;padding:11px 14px;font-size:calc(12.5px*var(--fs));border-bottom:1px solid #F1EFF2}
+.kv div:last-child{border-bottom:none}
+.kv div b{color:var(--ink);font-weight:600}
+.kv div span{color:var(--ink-soft);text-align:right}
+.bullet{display:flex;gap:10px;font-size:calc(12.5px*var(--fs));color:var(--ink-soft);line-height:1.5;margin-bottom:9px}
+.bullet .b{width:7px;height:7px;border-radius:2px;background:linear-gradient(135deg,var(--accent),var(--purple));margin-top:6px;flex:0 0 auto}
+.src{margin-top:14px;font-size:calc(10.5px*var(--fs));color:var(--mut);border-top:1px dashed var(--line);padding-top:10px;line-height:1.5}
+.callout{border-left:3px solid var(--accent);background:#F8F6FB;border-radius:8px;padding:11px 13px;font-size:calc(12px*var(--fs));
+  color:#453A63;line-height:1.5;margin-bottom:14px}
+.callout.plum{border-left-color:var(--purple);background:#F7F5FA;color:#2E2444}
+
+/* bars */
+.bars{display:flex;flex-direction:column;gap:10px;margin:4px 0 6px}
+.barrow{display:grid;grid-template-columns:1fr 44px;gap:6px 10px;align-items:center}
+.barrow .nm{grid-column:1/3;font-size:calc(12px*var(--fs));color:var(--ink-soft);font-weight:500}
+.barrow .nm small{color:var(--mut);font-weight:400}
+.track{height:9px;background:#F1EFF2;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.track i{display:block;height:100%;border-radius:6px;background:var(--purple);transition:width .9s cubic-bezier(.22,1,.36,1)}
+.track i.gold{background:var(--accent)} .track i.muted{background:#C2BACE}
+.barrow .qty{font-size:calc(12px*var(--fs));font-weight:700;text-align:right;color:var(--ink)}
+
+/* continuum */
+.continuum{display:flex;margin:8px 0 6px}
+.cstep{flex:1;text-align:center;position:relative;padding-top:24px}
+.cstep::before{content:"";position:absolute;top:8px;left:0;right:0;height:2px;background:var(--line)}
+.cstep:first-child::before{left:50%}.cstep:last-child::before{right:50%}
+.cstep .dot{position:absolute;top:2px;left:50%;transform:translateX(-50%);width:13px;height:13px;border-radius:50%;background:#fff;border:2px solid var(--line);z-index:2}
+.cstep.done .dot{background:var(--purple);border-color:var(--purple)}
+.cstep.current .dot{background:#fff;border-color:var(--purple);box-shadow:0 0 0 4px #E9E6F0}
+.cstep .lb{font-size:calc(11px*var(--fs));font-weight:600;color:var(--ink-soft)}
+.cstep .sub{font-size:calc(9.5px*var(--fs));color:var(--mut)}
+.cstep.todo .lb{color:var(--mut)}
+
+/* course list */
+.course{display:flex;align-items:flex-start;gap:11px;padding:11px 0;border-top:1px solid var(--line)}
+.course:first-child{border-top:none}
+.course .cic{width:21px;height:21px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:calc(11px*var(--fs));font-weight:700;margin-top:1px}
+.cic.done{background:#E9EFEB;color:var(--good)} .cic.prog{background:#F1EEF6;color:#4E4170} .cic.todo{background:#F9F8FB;color:var(--mut);border:1px solid var(--line)}
+.course .cm h4{font-size:calc(12.5px*var(--fs));font-weight:600}
+.course .cm p{font-size:calc(11px*var(--fs));color:var(--mut);margin:2px 0 0}
+.course .ctag{margin-left:auto;font-size:calc(9.5px*var(--fs));font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--mut);white-space:nowrap;padding-top:2px}
+
+/* NBA */
+.nbaitem{display:flex;gap:11px;padding:13px 0;border-top:1px solid var(--line)}
+.nbaitem:first-child{border-top:none}
+.nbaitem .ix{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-size:calc(14px*var(--fs));color:var(--purple);font-weight:600;width:20px;flex:none}
+.nbaitem h4{font-size:calc(12.5px*var(--fs));font-weight:600}
+.nbaitem p{font-size:calc(11.5px*var(--fs));color:var(--ink-soft);margin:3px 0 0;line-height:1.45}
+.nbaitem .why{font-size:calc(10.5px*var(--fs));color:var(--mut);margin-top:4px}
+
+/* NAVIGATOR */
+.navwrap{display:flex;flex-direction:column;gap:4px}
+.flab{font-size:calc(10px*var(--fs));letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin:14px 0 7px;font-weight:700}
+.flab:first-child{margin-top:0}
+.nchips{display:flex;flex-wrap:wrap;gap:6px}
+.nchip{font-family:inherit;font-size:calc(11.5px*var(--fs));font-weight:500;cursor:pointer;padding:7px 11px;border-radius:9px;
+  border:1px solid var(--line);background:#fff;color:var(--ink-soft);transition:.12s}
+.nchip:hover{border-color:var(--purple)}
+.nchip[aria-pressed="true"]{background:var(--purple);border-color:var(--purple);color:#fff}
+.nseg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.nseg button{flex:1;appearance:none;border:none;background:#fff;font-family:inherit;font-size:calc(11.5px*var(--fs));font-weight:500;
+  padding:8px 4px;cursor:pointer;color:var(--ink-soft);border-right:1px solid var(--line);transition:.12s}
+.nseg button:last-child{border-right:none}
+.nseg button[aria-pressed="true"]{background:#F3F1F6;color:var(--purple-deep);font-weight:600}
+.reco{margin-top:16px;border:1px solid var(--card-line);border-radius:14px;padding:15px 15px;background:#FAF9FB;animation:fade .3s ease}
+.reco .brandname{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-size:calc(18px*var(--fs));font-weight:600;color:var(--purple-deep);line-height:1.1}
+.reco .area{display:inline-block;font-size:calc(10px*var(--fs));font-weight:600;letter-spacing:.03em;text-transform:uppercase;
+  color:var(--purple-deep);background:#E9E6F0;border:1px solid #D6D0E0;padding:3px 9px;border-radius:14px;margin-top:8px}
+.reco h5{font-size:calc(10px*var(--fs));letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin:15px 0 7px;font-weight:700}
+.reco ul{margin:0;padding-left:17px}
+.reco ul li{font-size:calc(11.5px*var(--fs));color:var(--ink-soft);margin-bottom:5px;line-height:1.45}
+.reco .tie{display:flex;gap:9px;margin-top:14px;padding:11px 12px;border-radius:9px;background:#F1EEF6;border:1px solid #DCD6E8}
+.reco .tie p{margin:0;font-size:calc(11px*var(--fs));color:#453A63;line-height:1.45}
+.reco .tie b{color:#3B3155}
+.navempty{margin-top:16px;border:1px dashed var(--line);border-radius:14px;padding:26px 18px;text-align:center;color:var(--mut)}
+.navempty .big{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-size:calc(16px*var(--fs));color:var(--ink-soft);margin-bottom:5px}
+
+/* cohort */
+.cohort{display:grid;grid-template-columns:1fr auto auto;gap:9px 14px;align-items:center;margin:6px 0 2px}
+.cohort .ch{font-size:calc(9.5px*var(--fs));letter-spacing:.06em;text-transform:uppercase;color:var(--mut);text-align:right}
+.cohort .ch.l{text-align:left}
+.cohort .mt{font-size:calc(11.5px*var(--fs));color:var(--ink-soft)}
+.cohort .nm2{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-size:calc(16px*var(--fs));font-weight:600;text-align:right}
+.cohort .nm2.en{color:var(--accent)} .cohort .nm2.non{color:var(--mut)}
+.cohort .divider{grid-column:1/-1;height:1px;background:var(--line)}
+
+/* projector */
+.projbox{border:1px solid var(--card-line);border-radius:14px;padding:15px;background:#FAF9FB;margin-top:6px}
+.projhead{display:flex;align-items:baseline;justify-content:space-between}
+.projhead .lab{font-size:calc(10px*var(--fs));letter-spacing:.08em;text-transform:uppercase;color:var(--mut);font-weight:700}
+.projhead .val{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-size:calc(30px*var(--fs));font-weight:600;color:var(--accent);line-height:1}
+input[type=range]{width:100%;accent-color:var(--accent);height:4px;margin:10px 0 2px}
+.prow{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px dashed var(--line)}
+.prow:last-child{border-bottom:none}
+.prow .pl{font-size:calc(11.5px*var(--fs));color:var(--ink-soft);max-width:22ch}
+.prow .pv{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-size:calc(19px*var(--fs));font-weight:600;white-space:nowrap}
+.prow .pv.gold{color:var(--accent)} .prow .pv.plum{color:var(--purple)}
+.prow .pl small{display:block;font-size:calc(9.5px*var(--fs));color:var(--mut);font-weight:400}
+
+/* gauge */
+.gaugewrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:6px}
+.gauge{position:relative;width:150px;height:90px;flex:none}
+.gauge .glab{position:absolute;bottom:0;left:0;right:0;text-align:center}
+.gauge .gv{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-size:calc(28px*var(--fs));font-weight:600;line-height:1}
+.gauge .gc{font-size:calc(9.5px*var(--fs));letter-spacing:.07em;text-transform:uppercase;color:var(--mut)}
+.driver{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-top:1px solid var(--line);font-size:calc(11.5px*var(--fs))}
+.driver:first-child{border-top:none}
+.driver .di{flex:none;width:17px;height:17px;border-radius:5px;display:grid;place-items:center;font-size:calc(10px*var(--fs));font-weight:700;margin-top:1px}
+.di.bad{background:var(--alert-bg);color:var(--alert)} .di.mid{background:#F1EEF6;color:#4E4170}
+.driver .dv{margin-left:auto;font-weight:600;color:var(--ink-soft);white-space:nowrap}
+
+/* timeline */
+.tl{position:relative;margin:4px 0 2px;padding-left:17px}
+.tl::before{content:"";position:absolute;left:4px;top:4px;bottom:4px;width:2px;background:var(--line)}
+.tli{position:relative;padding:0 0 14px 4px}
+.tli:last-child{padding-bottom:0}
+.tli .td{position:absolute;left:-17px;top:3px;width:10px;height:10px;border-radius:50%;background:var(--purple);border:2px solid #fff}
+.tli.gold .td{background:var(--accent)} .tli.good .td{background:var(--good)}
+.tli .tdt{font-size:calc(9.5px*var(--fs));letter-spacing:.05em;text-transform:uppercase;color:var(--mut)}
+.tli .ttx{font-size:calc(12px*var(--fs));color:var(--ink-soft);margin-top:1px}
+.tli .ttx b{color:var(--ink);font-weight:600}
+
+/* plays */
+.play{padding:11px 0;border-top:1px solid var(--line)}
+.play:first-child{border-top:none}
+.play h4{font-size:calc(12.5px*var(--fs));font-weight:600;display:flex;gap:8px;align-items:center}
+.play h4 .pd{width:7px;height:7px;border-radius:50%;background:var(--purple);flex:none}
+.play p{font-size:calc(11.5px*var(--fs));color:var(--mut);margin:3px 0 0;line-height:1.45}
+
+/* faq accordion */
+.faq{border:1px solid var(--card-line);border-radius:12px;margin-bottom:9px;overflow:hidden}
+.faq .q{padding:11px 13px;font-size:calc(12px*var(--fs));font-weight:600;cursor:pointer;display:flex;gap:10px;align-items:center;color:var(--ink)}
+.faq .q span{margin-left:auto;color:var(--purple);font-weight:700;flex:none}
+.faq .a{padding:0 13px;max-height:0;overflow:hidden;transition:max-height .25s;font-size:calc(11.5px*var(--fs));color:var(--ink-soft);line-height:1.5}
+.faq .a.open{padding:0 13px 12px;max-height:280px}
+
+/* ---------- AI assistant ---------- */
+.ai{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#FAF9FB}
+.ai-head{flex:0 0 auto;display:flex;align-items:center;gap:11px;padding:10px 16px 11px;border-bottom:1px solid #EDEAF2;background:#fff}
+.ai-head .orb{width:34px;height:34px;border-radius:50%;flex:0 0 auto;
+  background:conic-gradient(from 200deg,var(--accent),var(--purple),var(--purple-deep),var(--accent));
+  display:flex;align-items:center;justify-content:center;color:#fff}
+.ai-head .orb svg{width:17px;height:17px}
+.ai-head .at b{font-size:calc(14px*var(--fs));font-weight:700;display:block;line-height:1.1}
+.ai-head .at span{font-size:calc(10.5px*var(--fs));color:var(--good);font-weight:600;display:flex;align-items:center;gap:5px}
+.ai-head .at span i{width:6px;height:6px;border-radius:50%;background:var(--good);display:inline-block}
+.ai-log{flex:1;overflow-y:auto;padding:16px 16px 8px;display:flex;flex-direction:column;gap:11px}
+.ai-log::-webkit-scrollbar{width:0}
+.msg{max-width:86%;font-size:calc(12.5px*var(--fs));line-height:1.5;padding:11px 13px;border-radius:16px}
+.msg.bot{background:#fff;border:1px solid var(--card-line);color:var(--ink);align-self:flex-start;border-bottom-left-radius:5px}
+.msg.me{background:var(--purple);color:#fff;align-self:flex-end;border-bottom-right-radius:5px}
+.msg .tag{display:inline-block;margin-top:8px;font-size:calc(9.5px*var(--fs));color:var(--mut);border-top:1px dashed var(--line);padding-top:6px}
+.msg.escal{border-color:#EDCACA;background:var(--alert-bg)}
+.msg.escal .tag{color:var(--alert);border-color:#EFD3D3}
+.chips2{display:flex;flex-wrap:wrap;gap:7px;padding:4px 16px 10px}
+.qchip{font-family:inherit;font-size:calc(11.5px*var(--fs));font-weight:600;color:var(--purple);background:#fff;
+  border:1px solid var(--card-line);border-radius:16px;padding:8px 12px;cursor:pointer;transition:.15s}
+.qchip:hover{border-color:var(--purple);background:#F8F7FA}
+.ai-input{flex:0 0 auto;display:flex;gap:9px;padding:10px 14px 14px;border-top:1px solid #EDEAF2;background:#fff}
+.ai-input input{flex:1;font-family:inherit;font-size:calc(13px*var(--fs));border:1px solid var(--line);border-radius:22px;
+  padding:11px 16px;outline:none;color:var(--ink)}
+.ai-input input:focus{border-color:var(--purple-soft)}
+.ai-send{width:42px;height:42px;border-radius:50%;border:none;background:var(--purple);color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.ai-send:hover{background:var(--purple-deep)}
+.typing{display:flex;gap:4px;align-items:center;padding:11px 14px}
+.typing i{width:7px;height:7px;border-radius:50%;background:var(--mut);animation:bl 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes bl{0%,60%,100%{opacity:.25}30%{opacity:1}}
+
+/* contacts */
+.contacts{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#fff}
+.cbody{flex:1;overflow-y:auto;padding:16px 18px 22px}
+.cintro{font-size:calc(12.5px*var(--fs));color:var(--ink-soft);line-height:1.5;margin-bottom:16px}
+.contact{display:flex;align-items:center;gap:13px;border:1px solid var(--card-line);border-radius:16px;padding:13px 14px;margin-bottom:11px}
+.contact .av{width:46px;height:46px;border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:calc(15px*var(--fs))}
+.contact .ct b{font-size:calc(14px*var(--fs));font-weight:700;display:block}
+.contact .ct span{font-size:calc(11px*var(--fs));color:var(--mut)}
+.contact .ct .role{font-size:calc(10.5px*var(--fs));color:var(--purple);font-weight:600}
+.contact .cbtns{margin-left:auto;display:flex;gap:8px}
+.cbtn{width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;transition:.15s}
+.cbtn.v{background:#56466F}.cbtn.p{background:var(--good)}
+.cbtn:hover{filter:brightness(1.08)}
+
+/* video call */
+.vcall{position:absolute;inset:0;z-index:60;border-radius:40px;overflow:hidden;display:flex;flex-direction:column;
+  background:radial-gradient(120% 80% at 50% 0%,#2A2040,#17131F);color:#fff}
+.vc-top{padding:54px 22px 0;text-align:center}
+.vc-top .nm{font-size:calc(19px*var(--fs));font-weight:700}
+.vc-top .st{font-size:calc(12px*var(--fs));opacity:.7;margin-top:4px}
+.vc-stage{flex:1;display:flex;align-items:center;justify-content:center}
+.vc-av{width:118px;height:118px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:#fff;animation:pulse 2s infinite}
+.vc-av svg{width:52px;height:52px}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,.22)}70%{box-shadow:0 0 0 26px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+.vc-self{position:absolute;right:16px;top:64px;width:74px;height:104px;border-radius:16px;
+  background:linear-gradient(160deg,#7A6B92,#332A48);border:1px solid rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6)}
+.vc-bar{display:flex;align-items:center;justify-content:center;gap:14px;padding:0 0 40px}
+.vbtn{width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.14);color:#fff;transition:.15s}
+.vbtn:hover{background:rgba(255,255,255,.22)}
+.vbtn.end{background:#8E2A2C;width:58px;height:58px}.vbtn.end:hover{background:#700002}
+.vbtn svg{width:22px;height:22px}
+
+/* toast */
+.toast{position:absolute;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);z-index:70;
+  background:#1A1A1A;color:#fff;font-size:calc(12px*var(--fs));font-weight:500;padding:11px 16px;border-radius:13px;
+  opacity:0;transition:.25s;pointer-events:none;max-width:84%;text-align:center;box-shadow:0 14px 30px -12px rgba(0,0,0,.5)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.fade{animation:fade .26s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ---------- tile swap animation ---------- */
+.tiles.swap .tile{animation:tilein .42s cubic-bezier(.22,1,.36,1) both}
+@keyframes tilein{from{opacity:0;transform:translateY(9px) scale(.94)}to{opacity:1;transform:none}}
+.segflash{animation:segflash .55s ease}
+@keyframes segflash{0%{box-shadow:0 0 0 0 rgba(123,107,160,.5)}100%{box-shadow:0 0 0 14px rgba(123,107,160,0)}}
+
+/* ---------- add-to-calendar buttons ---------- */
+.calbtn{margin-left:auto;flex:none;font-family:inherit;font-size:calc(9.5px*var(--fs));font-weight:700;letter-spacing:.03em;
+  color:var(--purple);background:#fff;border:1px solid #DEDAE6;border-radius:14px;padding:5px 9px;cursor:pointer;
+  display:flex;align-items:center;gap:4px;white-space:nowrap;transition:.15s;margin-top:1px}
+.calbtn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
+.calbtn:hover{background:var(--purple);border-color:var(--purple);color:#fff}
+.calbtn.added{background:#EEF2F0;border-color:#CBD8CF;color:var(--good);cursor:default}
+.calbtn.added:hover{background:#EEF2F0;color:var(--good)}
+
+/* ---------- bottom sheet ---------- */
+.sheetwrap{position:absolute;inset:0;z-index:65;border-radius:40px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+.sheetscrim{position:absolute;inset:0;background:rgba(23,19,31,.42);animation:fade .2s ease}
+.sheet{position:relative;background:#fff;border-radius:26px 26px 40px 40px;padding:8px 20px 22px;
+  box-shadow:0 -18px 40px -22px rgba(30,27,38,.5);animation:sheetup .3s cubic-bezier(.22,1,.36,1)}
+@keyframes sheetup{from{transform:translateY(102%)}to{transform:none}}
+.sheet .grab{width:38px;height:4px;border-radius:3px;background:#E3E0E5;margin:0 auto 12px}
+.sheet h3{font-size:calc(15px*var(--fs));font-weight:700;margin:0 0 2px}
+.sheet .sub{font-size:calc(11.5px*var(--fs));color:var(--mut);margin-bottom:12px}
+.calnav{display:flex;align-items:center;justify-content:space-between;margin:2px 0 8px}
+.calnav b{font-size:calc(12.5px*var(--fs));font-weight:700}
+.calnav button{width:26px;height:26px;border-radius:9px;border:1px solid var(--line);background:#fff;cursor:pointer;
+  color:var(--ink-soft);display:flex;align-items:center;justify-content:center;font-size:13px;line-height:1;transition:.15s}
+.calnav button:hover{border-color:var(--purple);color:var(--purple)}
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.calgrid .dh{font-size:calc(9px*var(--fs));text-align:center;color:var(--mut);font-weight:700;letter-spacing:.04em;padding-bottom:3px}
+.calday{aspect-ratio:1;border:1px solid transparent;border-radius:10px;background:#FAF9FB;font-family:inherit;
+  font-size:calc(11.5px*var(--fs));color:var(--ink-soft);cursor:pointer;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:2px;transition:.13s;padding:0}
+.calday:hover{border-color:var(--purple-soft)}
+.calday.mute{background:transparent;color:#C2BACE;cursor:default}
+.calday.mute:hover{border-color:transparent}
+.calday.today{border-color:var(--accent);color:var(--accent-deep);font-weight:700}
+.calday[aria-pressed="true"]{background:var(--purple);border-color:var(--purple);color:#fff;font-weight:700}
+.calday .ev{width:4px;height:4px;border-radius:50%;background:var(--accent)}
+.calday[aria-pressed="true"] .ev{background:#fff}
+.timerow{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.timechip{font-family:inherit;font-size:calc(11px*var(--fs));font-weight:600;border:1px solid var(--line);background:#fff;
+  color:var(--ink-soft);padding:7px 11px;border-radius:10px;cursor:pointer;transition:.13s}
+.timechip:hover{border-color:var(--purple)}
+.timechip[aria-pressed="true"]{background:#F3F1F6;border-color:var(--purple);color:var(--purple-deep)}
+.sheet .flab{margin:14px 0 6px}
+.sheetbtns{display:flex;gap:9px;margin-top:16px}
+.sheetbtns button{flex:1;font-family:inherit;font-size:calc(13px*var(--fs));font-weight:700;border-radius:22px;padding:12px;cursor:pointer;transition:.15s}
+.sbtn-x{background:#fff;border:1.5px solid var(--line);color:var(--ink-soft)}
+.sbtn-x:hover{border-color:var(--purple);color:var(--purple)}
+.sbtn-ok{background:var(--purple);border:1.5px solid var(--purple);color:#fff}
+.sbtn-ok:hover{background:var(--purple-deep);border-color:var(--purple-deep)}
+
+/* ---------- calendar screen ---------- */
+.calscreen{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#fff}
+.calbody{flex:1;overflow-y:auto;padding:14px 18px 22px}
+.calbody::-webkit-scrollbar{width:0}
+.calcard{border:1px solid var(--card-line);border-radius:16px;padding:13px 13px 14px;background:#fff}
+.agenda{margin-top:16px}
+.agitem{display:flex;gap:11px;align-items:flex-start;border:1px solid var(--card-line);border-radius:14px;
+  padding:11px 12px;margin-bottom:9px;background:#fff}
+.agitem .dbox{flex:none;width:40px;text-align:center;border-radius:10px;padding:5px 0;background:#F3F1F6}
+.agitem .dbox .m{font-size:calc(8.5px*var(--fs));letter-spacing:.08em;text-transform:uppercase;color:var(--purple);font-weight:700}
+.agitem .dbox .d{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-size:calc(17px*var(--fs));font-weight:600;color:var(--purple-deep);line-height:1.05}
+.agitem.gold .dbox{background:#F1EEF6}.agitem.gold .dbox .m{color:#5B4C7D}.agitem.gold .dbox .d{color:#4E4170}
+.agitem .am h4{font-size:calc(12.5px*var(--fs));font-weight:600;line-height:1.25}
+.agitem .am p{font-size:calc(10.5px*var(--fs));color:var(--mut);margin:2px 0 0;line-height:1.35}
+.agitem .rm{margin-left:auto;flex:none;background:none;border:none;cursor:pointer;color:var(--mut);font-size:15px;
+  line-height:1;padding:2px 2px 2px 6px;transition:.15s}
+.agitem .rm:hover{color:var(--alert)}
+.calbadge{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;border-radius:9px;background:var(--accent);
+  color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px;border:1.5px solid #fff}
+.tb.cal{background:var(--accent);position:relative}
+.icon-btn.rel{position:relative}
+.tabbar{flex-wrap:wrap}
+.tb{flex:0 0 auto;position:relative}
+.tb-ai{flex:0 1 auto;min-width:0}
+.calbadge{z-index:3}
+
+@media(max-width:960px){
+  .wrap{grid-template-columns:1fr;gap:30px;padding:24px 16px 48px}
+  .console{position:static;order:1;text-align:center}
+  .console p.lede{margin:0 auto}
+  .console .role-row,.console .seg-row{justify-content:center}
+  .stage{order:2}
+  .panel{text-align:left}
+  .notes li{text-align:left}
+}
+@media(max-width:430px){
+  .phone{width:100%;max-width:374px;height:792px;border-radius:46px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ============ PROFILE-UPDATE DEMO — added components ============ */
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:none}}
+
+/* ---- messages screen ---- */
+.msghead{flex:0 0 auto;padding:9px 16px 11px;border-bottom:1px solid var(--card-line);background:#fff;display:flex;align-items:center;gap:11px;z-index:20}
+.msghead .mav{width:36px;height:36px;border-radius:50%;flex:0 0 auto;color:#fff;display:grid;place-items:center;
+  background:linear-gradient(135deg,#6B5C86,var(--purple-deep));font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  font-size:calc(9px*var(--fs));font-weight:600;letter-spacing:.1em}
+.msghead .mm b{display:block;font-size:calc(13.5px*var(--fs));font-weight:700;line-height:1.15}
+.msghead .mm span{display:block;font-size:calc(10px*var(--fs));color:var(--mut);margin-top:2px}
+.msghead .mx{margin-left:auto;font-size:calc(9.5px*var(--fs));font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--purple);background:#F3F1F6;border:1px solid #DEDAE6;border-radius:8px;padding:4px 8px}
+.thread{flex:1 1 auto;overflow-y:auto;overflow-x:hidden;padding:14px 16px 20px;background:#fff;display:flex;flex-direction:column;gap:8px}
+.thread::-webkit-scrollbar{width:0}
+.tday{text-align:center;font-size:calc(9.5px*var(--fs));color:var(--mut);text-transform:uppercase;letter-spacing:.12em;margin:2px 0 8px;font-weight:600}
+.bub{max-width:82%;padding:10px 13px;border-radius:18px;font-size:calc(12.5px*var(--fs));line-height:1.45}
+.bub.in{align-self:flex-start;background:#F1EFF2;color:var(--ink);border-bottom-left-radius:6px}
+.bub.out{align-self:flex-end;background:var(--purple);color:#fff;border-bottom-right-radius:6px}
+.bub .bt{display:block;font-size:calc(9px*var(--fs));margin-top:5px;opacity:.55;letter-spacing:.03em}
+.typing3{align-self:flex-start;background:#F1EFF2;border-radius:18px;border-bottom-left-radius:6px;padding:13px 15px;display:flex;gap:4px}
+.typing3 i{width:6px;height:6px;border-radius:50%;background:var(--mut);animation:bl 1s infinite}
+.typing3 i:nth-child(2){animation-delay:.18s} .typing3 i:nth-child(3){animation-delay:.36s}
+.linkcard{align-self:flex-start;width:84%;border:1px solid var(--card-line);border-radius:16px;overflow:hidden;background:#fff;
+  cursor:pointer;transition:.16s;box-shadow:0 14px 30px -20px rgba(36,27,54,.55)}
+.linkcard:hover{border-color:var(--purple-soft);transform:translateY(-2px);box-shadow:0 18px 34px -20px rgba(36,27,54,.6)}
+.linkcard .lc-top{background:linear-gradient(125deg,#56466F,var(--purple-deep));color:#fff;padding:15px 15px 14px}
+.linkcard .lc-top .wm{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;text-transform:uppercase;letter-spacing:.22em;
+  font-size:calc(11px*var(--fs));font-weight:500;opacity:.95}
+.linkcard .lc-top .lu{font-size:calc(9.5px*var(--fs));opacity:.6;margin-top:6px;letter-spacing:.02em}
+.linkcard .lc-b{padding:12px 15px 14px}
+.linkcard .lc-b b{display:block;font-size:calc(12.5px*var(--fs));line-height:1.3}
+.linkcard .lc-b span{display:block;font-size:calc(10.5px*var(--fs));color:var(--mut);margin-top:4px;line-height:1.4}
+.linkcard .lc-go{margin-top:10px;font-size:calc(11.5px*var(--fs));font-weight:700;color:var(--purple);display:flex;align-items:center;gap:6px}
+.composer{flex:0 0 auto;border-top:1px solid var(--card-line);background:#fff;padding:8px 12px 12px}
+.cutil{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.chint{flex:1;min-width:0;font-size:calc(9.5px*var(--fs));color:var(--mut);letter-spacing:.02em;line-height:1.3}
+.cu{font-family:inherit;font-size:calc(9.5px*var(--fs));font-weight:700;letter-spacing:.04em;color:var(--purple);
+  background:#F3F1F6;border:1px solid #DEDAE6;border-radius:8px;padding:5px 8px;cursor:pointer;transition:.15s;white-space:nowrap;flex:0 0 auto}
+.cu:hover{background:var(--purple);border-color:var(--purple);color:#fff}
+.qreplies{display:flex;flex-direction:column;gap:6px;margin-bottom:9px}
+.qr{display:flex;align-items:center;gap:10px;font-family:inherit;font-size:calc(11.5px*var(--fs));font-weight:600;
+  border:1px solid var(--line);background:#fff;color:var(--ink-soft);padding:9px 11px;border-radius:12px;
+  cursor:pointer;transition:.15s;text-align:left;line-height:1.25}
+.qr:hover{border-color:var(--purple);color:var(--purple);transform:translateY(-1px);box-shadow:0 8px 18px -14px rgba(36,27,54,.6)}
+.qr b{width:21px;height:21px;border-radius:6px;background:var(--purple);color:#fff;display:grid;place-items:center;
+  font-size:calc(10.5px*var(--fs));font-weight:700;flex:0 0 auto;line-height:1}
+.qr:hover b{background:var(--purple-deep)}
+.cinput{display:flex;gap:7px;align-items:center}
+.cinput input{flex:1;min-width:0;font-family:inherit;font-size:calc(12px*var(--fs));border:1px solid var(--line);
+  border-radius:20px;padding:10px 14px;outline:none;background:#FAF9FB;color:var(--ink)}
+.cinput input:focus{border-color:var(--purple-soft);background:#fff}
+.cinput input::placeholder{color:var(--mut)}
+.cinput input:disabled{opacity:.5}
+.cinput button{width:36px;height:36px;border-radius:50%;border:none;background:var(--purple);color:#fff;cursor:pointer;
+  display:grid;place-items:center;flex:0 0 auto;transition:.15s}
+.cinput button:hover{background:var(--purple-deep)}
+.bub.sys{align-self:center;background:#FBF4F4;border:1px solid #EFD3D3;color:var(--alert);font-size:calc(10px*var(--fs));
+  border-radius:11px;max-width:90%;text-align:center;font-weight:600;padding:8px 12px;line-height:1.4}
+
+/* .thread is a flex column. A flex item only gets an automatic minimum size
+   while its overflow is visible, so .linkcard (overflow:hidden) was the one
+   child flexbox was allowed to crush — once the conversation overfilled the
+   thread it collapsed to its 1px borders and the link "disappeared".
+   Nothing in a scrolling flex column may shrink. */
+.thread>*{flex-shrink:0}
+.thread>*:last-child{animation:pop .3s cubic-bezier(.22,1,.36,1)}
+
+/* ---- profile hub ---- */
+.pwrap{padding:15px 20px 22px}
+.pring{display:flex;gap:15px;align-items:center;border:1px solid var(--card-line);border-radius:18px;padding:15px;
+  background:linear-gradient(160deg,#FAF9FB,#fff)}
+.pring .pr{position:relative;width:74px;height:74px;flex:0 0 auto}
+.pring .pr .pv2{position:absolute;inset:0;display:grid;place-items:center;font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  font-weight:600;font-size:calc(19px*var(--fs));color:var(--purple);line-height:1}
+.pmeta b{display:block;font-size:calc(14px*var(--fs));line-height:1.2}
+.pmeta p{font-size:calc(11px*var(--fs));color:var(--mut);margin-top:4px;line-height:1.45}
+.needbadge{display:inline-block;margin-top:8px;font-size:calc(9px*var(--fs));font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  padding:4px 8px;border-radius:7px;background:#FBF4F4;color:var(--alert);border:1px solid #EFD3D3}
+.needbadge.ok{background:#EEF2F0;color:var(--good);border-color:#CBD8CF}
+.seclist{margin-top:15px;display:flex;flex-direction:column;gap:9px}
+.secrow{display:flex;gap:12px;align-items:center;border:1px solid var(--card-line);border-radius:14px;padding:12px 13px;
+  cursor:pointer;transition:.16s;background:#fff;text-align:left;width:100%;font-family:inherit}
+.secrow:hover{border-color:var(--purple-soft);transform:translateY(-1px);box-shadow:0 10px 22px -18px rgba(36,27,54,.5)}
+.secrow .sic{width:34px;height:34px;border-radius:11px;background:#F3F1F6;color:var(--purple);display:grid;place-items:center;flex:0 0 auto}
+.secrow .sic svg{width:18px;height:18px}
+.secrow.done .sic{background:#EEF2F0;color:var(--good)}
+.secrow.need .sic{background:#FBF4F4;color:var(--alert)}
+.secrow .sm{flex:1;min-width:0}
+.secrow .sm b{display:block;font-size:calc(12.5px*var(--fs));font-weight:700;line-height:1.2}
+.secrow .sm span{display:block;font-size:calc(10.5px*var(--fs));color:var(--mut);margin-top:3px;line-height:1.35}
+.secrow .sst{font-size:calc(9.5px*var(--fs));font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);white-space:nowrap;flex:0 0 auto}
+.secrow.done .sst{color:var(--good)} .secrow.need .sst{color:var(--alert)}
+.pbar{height:5px;border-radius:3px;background:#E3E0E5;overflow:hidden;margin-top:11px}
+.pbar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--purple-soft),var(--purple));transition:width .5s cubic-bezier(.22,1,.36,1)}
+
+/* ---- deep-link arrival banner ---- */
+.arrived{display:flex;gap:11px;align-items:center;border:1px solid #DEDAE6;background:linear-gradient(150deg,#F8F6FB,#fff);
+  border-radius:14px;padding:12px 13px;margin-bottom:15px}
+.arrived .ai2{width:30px;height:30px;border-radius:10px;background:var(--purple);color:#fff;display:grid;place-items:center;flex:0 0 auto}
+.arrived .ai2 svg{width:16px;height:16px}
+.arrived div{flex:1;min-width:0}
+.arrived b{display:block;font-size:calc(11.5px*var(--fs));line-height:1.2}
+.arrived span{display:block;font-size:calc(10px*var(--fs));color:var(--mut);margin-top:3px;line-height:1.4}
+.arrived .av2{font-family:inherit;font-size:calc(9.5px*var(--fs));font-weight:700;letter-spacing:.03em;color:var(--purple);
+  background:#fff;border:1px solid #DEDAE6;border-radius:9px;padding:6px 9px;cursor:pointer;transition:.15s;white-space:nowrap;flex:0 0 auto}
+.arrived .av2:hover{background:var(--purple);border-color:var(--purple);color:#fff}
+
+/* ---- section forms ---- */
+.mchips{display:flex;flex-wrap:wrap;gap:7px}
+.mchip{font-family:inherit;font-size:calc(11.5px*var(--fs));font-weight:600;border:1px solid var(--line);background:#fff;
+  color:var(--ink-soft);padding:9px 12px;border-radius:11px;cursor:pointer;transition:.15s;line-height:1}
+.mchip:hover{border-color:var(--purple-soft);color:var(--purple)}
+.mchip[aria-pressed="true"]{background:var(--purple);border-color:var(--purple);color:#fff}
+.stepper{display:flex;align-items:center;gap:10px;border:1px solid var(--card-line);border-radius:12px;padding:9px 11px}
+.stepper .sl{flex:1;font-size:calc(12px*var(--fs));font-weight:600;color:var(--ink-soft)}
+.stepper button{width:30px;height:30px;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--purple);
+  font-size:calc(16px*var(--fs));font-weight:700;cursor:pointer;font-family:inherit;line-height:1;transition:.15s}
+.stepper button:hover{border-color:var(--purple);background:#F8F7FA}
+.stepper .sv{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-weight:600;font-size:calc(17px*var(--fs));min-width:28px;text-align:center;color:var(--purple)}
+.stepper .sv.unset{color:var(--mut);font-size:calc(14px*var(--fs))}
+.confirmrow{display:flex;gap:12px;align-items:center;border:1px solid var(--card-line);border-radius:14px;padding:13px;margin-bottom:9px}
+.confirmrow .cr{flex:1;min-width:0}
+.confirmrow .cr b{display:block;font-size:calc(12.5px*var(--fs));line-height:1.25}
+.confirmrow .cr span{display:block;font-size:calc(10.5px*var(--fs));color:var(--mut);margin-top:3px;line-height:1.4}
+.sw{width:46px;height:27px;border-radius:14px;background:#E3E0E5;position:relative;cursor:pointer;transition:.22s;flex:0 0 auto;border:none;padding:0}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:21px;height:21px;border-radius:50%;background:#fff;
+  transition:.22s cubic-bezier(.22,1,.36,1);box-shadow:0 2px 5px rgba(36,27,54,.32)}
+.sw[aria-pressed="true"]{background:var(--good)}
+.sw[aria-pressed="true"]::after{left:22px}
+.savebar{flex:0 0 auto;padding:11px 20px 15px;border-top:1px solid var(--card-line);background:#fff;display:flex;gap:9px;align-items:center}
+.savebar .sc{flex:1;font-size:calc(10.5px*var(--fs));color:var(--mut);line-height:1.35}
+.savebar button{font-family:inherit;font-size:calc(12px*var(--fs));font-weight:700;border-radius:11px;padding:11px 18px;cursor:pointer;
+  background:var(--purple);border:1.5px solid var(--purple);color:#fff;transition:.15s;white-space:nowrap}
+.savebar button:hover{background:var(--purple-deep);border-color:var(--purple-deep)}
+.savebar button[disabled]{opacity:.35;cursor:default}
+
+/* ---- what changed ---- */
+.diff{border:1px solid var(--card-line);border-radius:16px;padding:14px;margin-bottom:11px;animation:pop .35s cubic-bezier(.22,1,.36,1) both}
+.diff h4{font-size:calc(12.5px*var(--fs));display:flex;align-items:center;gap:9px;margin-bottom:10px;line-height:1.2}
+.diff h4 .dic{width:27px;height:27px;border-radius:9px;background:#F3F1F6;color:var(--purple);display:grid;place-items:center;flex:0 0 auto}
+.diff h4 .dic svg{width:15px;height:15px}
+.diff p{font-size:calc(11px*var(--fs));color:var(--mut);line-height:1.5}
+.wasnow{display:flex;gap:9px;align-items:center;font-size:calc(11.5px*var(--fs));margin-bottom:8px}
+.wasnow .was{flex:1;color:var(--mut);text-decoration:line-through;text-decoration-color:#C2BACE}
+.wasnow .arw{color:var(--purple);font-weight:700;flex:0 0 auto}
+.wasnow .now{flex:1;color:var(--ink);font-weight:700}
+.minitiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:4px}
+.minitiles.before{opacity:.55}
+.gridlab{font-size:calc(9px*var(--fs));font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin:11px 0 4px}
+.mt2{border:1px solid var(--card-line);border-radius:10px;padding:9px 5px;text-align:center;font-size:calc(8.5px*var(--fs));
+  font-weight:600;color:var(--mut);line-height:1.3;min-height:48px;display:flex;align-items:center;justify-content:center}
+.mt2.newin{border-color:var(--purple);background:#F7F5FA;color:var(--purple)}
+.pillrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.pill2{font-size:calc(10px*var(--fs));font-weight:600;border-radius:9px;padding:6px 9px;border:1px solid var(--line);color:var(--mut);background:#fff}
+.pill2.on{border-color:var(--purple);background:var(--purple);color:#fff}
+.pill2.off{opacity:.45;text-decoration:line-through;text-decoration-color:#C2BACE}
+.ordrow{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:calc(11.5px*var(--fs))}
+.ordrow:last-child{border-bottom:none}
+.ordrow .on2{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-weight:600;font-size:calc(12px*var(--fs));color:var(--purple);width:18px;flex:0 0 auto}
+.ordrow.dim{color:var(--mut)} .ordrow.dim .on2{color:var(--mut)}
+.ordrow .otag{margin-left:auto;font-size:calc(9px*var(--fs));font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--purple);white-space:nowrap}
+.ordrow.hint{align-items:flex-start;gap:8px}
+.ordrow.hint .oname{flex:0 0 auto;font-weight:600;color:var(--ink-soft)}
+.ordrow.hint .otag{white-space:normal;text-transform:none;letter-spacing:0;font-weight:400;text-align:right;line-height:1.4;max-width:58%;color:var(--mut)}
+.ordrow.dim .otag{color:var(--mut)}
+.unlock{border:1px solid #DCD6E8;background:linear-gradient(150deg,#F8F6FB,#fff);border-radius:16px;padding:18px 16px;text-align:center;margin-bottom:11px;
+  animation:pop .4s cubic-bezier(.22,1,.36,1) both}
+.unlock .ul{font-size:calc(9.5px*var(--fs));font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+.unlock .amt{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-size:calc(34px*var(--fs));font-weight:600;color:var(--accent-deep);line-height:1;margin:7px 0 6px}
+.unlock .us{font-size:calc(11px*var(--fs));color:var(--ink-soft);line-height:1.45}
+
+/* ---- handoff ---- */
+.hoff{border:1px solid var(--card-line);border-radius:18px;padding:16px;background:linear-gradient(160deg,#FAF9FB,#fff);margin-top:4px}
+.hoff .hg{display:flex;gap:12px;align-items:center;color:#fff;border-radius:15px;padding:13px 14px;
+  background:linear-gradient(120deg,#56466F,var(--purple-deep))}
+.hoff .hg .av2{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);flex:0 0 auto;display:grid;place-items:center;
+  font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-weight:600;font-size:calc(14px*var(--fs))}
+.hoff .hg b{display:block;font-size:calc(13px*var(--fs));line-height:1.2}
+.hoff .hg span{display:block;font-size:calc(10.5px*var(--fs));opacity:.9;margin-top:2px}
+
+/* ============ COMBINED DEMO — console journey strip, hub profile strip ============ */
+.journey{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:8px}
+.jstep{border:1px solid var(--line);border-radius:10px;padding:8px 5px 7px;background:#fff;text-align:center;transition:.2s}
+.jstep b{display:block;font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-weight:600;font-size:14px;color:var(--mut);line-height:1}
+.jstep span{display:block;font-size:9.5px;font-weight:600;color:var(--mut);margin-top:5px;line-height:1.2;letter-spacing:.01em}
+.jstep.on{border-color:var(--purple);background:var(--purple)} .jstep.on b,.jstep.on span{color:#fff}
+.jstep.done{border-color:#CBD8CF;background:#EEF2F0} .jstep.done b,.jstep.done span{color:var(--good)}
+.jnow{font-size:11.5px;color:var(--ink-soft);line-height:1.45;min-height:32px;margin-bottom:6px}
+.btnrow{display:flex;gap:8px} .btnrow .reset{margin-top:16px;padding:11px 6px}
+.btnrow .reset.alt{color:var(--ink-soft)}
+.pstrip{margin:10px 20px 0;border:1px solid #DEDAE6;background:linear-gradient(150deg,#F8F6FB,#fff);border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:11px}
+.pstrip.warn{border-color:#E9CBCB;background:linear-gradient(150deg,#FBF4F4,#fff)}
+.pstrip .pv3{font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-weight:600;font-size:calc(16px*var(--fs));color:var(--purple);flex:0 0 auto;min-width:38px}
+.pstrip.warn .pv3{color:var(--alert)}
+.pstrip .pm{flex:1;min-width:0}
+.pstrip .pm b{display:block;font-size:calc(11.5px*var(--fs));line-height:1.2}
+.pstrip .pm span{display:block;font-size:calc(10px*var(--fs));color:var(--mut);margin-top:3px;line-height:1.35}
+.pstrip button{font-family:inherit;font-size:calc(9.5px*var(--fs));font-weight:700;letter-spacing:.03em;color:var(--purple);
+  background:#fff;border:1px solid #DEDAE6;border-radius:9px;padding:6px 9px;cursor:pointer;transition:.15s;white-space:nowrap;flex:0 0 auto}
+.pstrip button:hover{background:var(--purple);border-color:var(--purple);color:#fff}
+.flab-note{font-weight:500;letter-spacing:0;text-transform:none;color:var(--purple);margin-left:6px}
+.course.dim{opacity:.55} .course .cic.off{background:#F3F1F6;color:var(--mut)}
+.icon-btn.p360{width:auto;padding:0 10px 0 8px;gap:5px;color:var(--purple);border-color:#DEDAE6;background:#F8F7FA}
+.icon-btn.p360 svg{width:16px;height:16px;flex:0 0 auto}
+.icon-btn.p360 span{font-size:calc(11px*var(--fs));font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.icon-btn.p360:hover{background:var(--purple);border-color:var(--purple);color:#fff}
+.tb.prof{position:relative;background:var(--purple)}
+.tb .calbadge{position:absolute;top:-4px;right:-4px}
+
+/* ================= PHONE ONLY BUILD ================= */
+html,body{height:100%}
+body{min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center}
+.stage{width:100%;display:flex;justify-content:center;align-items:center;padding:24px 16px}
+.phone{width:390px;max-width:100%;height:844px;height:min(844px, calc(100vh - 48px));height:min(844px, calc(100dvh - 48px));min-height:600px}
+/* inputs: 16px stops iOS zooming the page when a field gets focus */
+@media (hover:none) and (pointer:coarse){ .ai-input input,.cinput input{font-size:max(16px, calc(13px*var(--fs)))} }
+
+/* On an actual phone the demo IS the screen: no bezel, no fake status bar */
+@media (max-width:520px){
+  html,body{background:#fff;overflow:hidden}
+  body{display:block;min-height:0}
+  .stage{display:block;padding:0;height:100%}
+  .phone{width:100%;max-width:none;height:100%;min-height:0;border-radius:0;padding:0;background:#fff;box-shadow:none}
+  .notch,.status{display:none}
+  .screen{border-radius:0;padding-top:max(env(safe-area-inset-top,0px),10px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  .vcall,.sheetwrap{border-radius:0}
+  .vc-top{padding-top:calc(30px + env(safe-area-inset-top,0px))}
+  .sheet{border-radius:22px 22px 0 0;padding-bottom:calc(22px + env(safe-area-inset-bottom,0px))}
+}
+
+/* churn gauge caption no longer clips at the larger text sizes */
+.gauge .glab{left:-16px;right:-16px}
+.gauge .gc{white-space:nowrap;font-size:calc(9.5px*min(var(--fs),1.1));letter-spacing:.05em}
+
+/* demo setup block on the Switch role screen (replaces the desktop console) */
+.demo-set{margin-top:22px;border-top:1px dashed var(--card-line);padding-top:16px}
+.demo-set .dh{font-size:calc(12px*var(--fs));font-weight:700;color:var(--ink-soft)}
+.demo-set .dl{font-size:calc(11px*var(--fs));font-weight:600;color:var(--mut);margin:12px 0 7px}
+.demo-set .dchips{display:flex;flex-wrap:wrap;gap:6px}
+.demo-set .chip{font-size:calc(11.5px*var(--fs));padding:8px 11px}
+.demo-set .disc{font-size:calc(10px*var(--fs));color:var(--mut);line-height:1.5;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="screen" id="screen"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   ALASTIN Practice 360° + Profile Update — one combined prototype
+   Unaffiliated demo. Fictional provider, practice, programs and figures.
+
+   Two halves, one phone, one state object:
+     phase 'sms'  → the text thread, the practice profile, "What changed"
+     phase 'app'  → Practice 360° (hub, modules, AI, calendar, contacts)
+   The profile she fills in the first half is the account the second
+   half opens on. Everything the "What changed" screen claims is derived
+   from P (the profile), and the app derives from the same P.
+   ============================================================ */
+const SVG = {
+  affiliate:'<circle cx="12" cy="12" r="4.4"/><path d="M12 10.2c-.9 0-1.5.4-1.5 1s.7.8 1.5 1 1.5.4 1.5 1-.6 1-1.5 1M12 9.4v.8M12 14.8v.8"/><path d="M4 4l2.5 2.5M4 4v2.4M4 4h2.4M20 4l-2.5 2.5M20 4v2.4M20 4h-2.4M4 20l2.5-2.5M4 20v-2.4M4 20h2.4M20 20l-2.5-2.5M20 20v-2.4M20 20h-2.4"/>',
+  anatomy:'<circle cx="9.5" cy="6.5" r="2.6"/><path d="M5 20a4.6 4.6 0 019.2 0"/><path d="M17 5.5c1.9 0 3 1.5 3 3.4s-1.8 4.2-3 5.1c-1.2-.9-3-3.2-3-5.1s1.1-3.4 3-3.4z"/>',
+  articles:'<rect x="5" y="3" width="14" height="18" rx="2"/><rect x="8" y="6" width="4" height="3.2" rx=".5"/><path d="M14 7.6h2M8 12.4h8M8 15.2h8M8 18h5"/>',
+  brands:'<circle cx="7" cy="7" r="1.15" fill="currentColor" stroke="none"/><circle cx="12" cy="6" r="1.15" fill="currentColor" stroke="none"/><circle cx="17" cy="7" r="1.15" fill="currentColor" stroke="none"/><circle cx="6" cy="12" r="1.15" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.15" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="1.15" fill="currentColor" stroke="none"/><circle cx="7" cy="17" r="1.15" fill="currentColor" stroke="none"/><circle cx="12" cy="18" r="1.15" fill="currentColor" stroke="none"/><circle cx="17" cy="17" r="1.15" fill="currentColor" stroke="none"/>',
+  grow:'<circle cx="12" cy="8" r="3"/><path d="M10.8 6.6h2.4M12 5.4v2.4"/><path d="M6 20a6 6 0 0112 0"/>',
+  conferences:'<rect x="4" y="4" width="16" height="11" rx="1.5"/><path d="M8 11l2.4-3 2 2L16 7"/><path d="M12 15v3M8.5 21h7"/>',
+  faqs:'<path d="M12 3l1.7 1.1 2-.4 1 1.8 1.8 1-.4 2L20.4 12l-1.3 1.7.4 2-1.8 1-1 1.8-2-.4L12 21l-1.7-1.1-2 .4-1-1.8-1.8-1 .4-2L4.6 12 5.9 10.3l-.4-2 1.8-1 1-1.8 2 .4z"/><path d="M10.6 9.5a1.6 1.6 0 113 .6c0 1-1.5 1.3-1.5 2.2"/><circle cx="12" cy="15" r=".55" fill="currentColor" stroke="none"/>',
+  inclinic:'<rect x="4" y="7" width="16" height="12" rx="2"/><path d="M9 7V5.6A1.5 1.5 0 0110.5 4.1h3A1.5 1.5 0 0115 5.6V7"/><circle cx="12" cy="13" r="2.1"/><path d="M12 10.3v.7M12 15v.7M14.3 13h-.7M10.4 13h-.7"/>',
+  online:'<path d="M3 7a2 2 0 012-2h6a2 2 0 012 2v2.6a2 2 0 01-2 2H7l-3 2.2V7z"/><path d="M11 13.6a2 2 0 012-2h4a2 2 0 012 2v2a2 2 0 01-2 2h-2.4L13 19.6v-1.5a2 2 0 01-2-2z"/>',
+  prepare:'<rect x="3" y="4" width="18" height="13.5" rx="2"/><path d="M6 13.5l3-3 2.4 2L17 7.6"/><path d="M15.6 7.6H17v1.4"/><path d="M8.5 21h7"/>',
+  centers:'<rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2M10 21v-3h4v3"/>',
+  mylearning:'<path d="M12 3l1.7 1.1 2-.4 1 1.8 1.8 1-.4 2L20.4 12l-1.3 1.7.4 2-1.8 1-1 1.8-2-.4L12 21l-1.7-1.1-2 .4-1-1.8-1.8-1 .4-2L4.6 12 5.9 10.3l-.4-2 1.8-1 1-1.8 2 .4z"/><path d="M9.3 12l1.8 1.8L15 10.2"/>',
+  safety:'<path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9.5 12l1.8 1.8L15 10"/>',
+  payments:'<rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M12 10.7c-.6 0-1 .3-1 .7 0 .8 2 .4 2 1.2 0 .4-.4.7-1 .7M12 10.1v.6M12 13.4v.6M6 12h.02M18 12h.02"/>',
+  kol:'<circle cx="6" cy="8" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="12" cy="17" r="2"/><path d="M7.6 9.6l3 5.8M16.4 9.6l-3 5.8M8 8h8"/>',
+  toparticles:'<circle cx="8" cy="6.4" r="2.2"/><path d="M4.5 20a3.5 3.5 0 017 0"/><rect x="13" y="4.5" width="7" height="9" rx="1"/><path d="M15 7.2h3M15 9.6h3M15 12h2"/>',
+  person:'<circle cx="12" cy="8" r="3.4"/><path d="M5.5 20a6.5 6.5 0 0113 0"/>',
+  bulb:'<path d="M9 18h6M10 21h4M12 3a6 6 0 00-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0012 3z"/>',
+  bc:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M8 15h8"/>',
+  ami:'<path d="M12 3l9 4-9 4-9-4 9-4z"/><path d="M6 9v5c0 1.5 2.7 3 6 3s6-1.5 6-3V9"/>',
+  reimb:'<circle cx="12" cy="12" r="9"/><path d="M14.5 9.3A2.6 2.6 0 0012 8c-1.4 0-2.5.9-2.5 2s1.1 1.7 2.5 2 2.5.9 2.5 2-1.1 2-2.5 2a2.6 2.6 0 01-2.5-1.3M12 6.5v11"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="8" r=".7" fill="currentColor" stroke="none"/>',
+  /* profile-update icons */
+  building:'<rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M10 21v-3h4v3"/>',
+  wand:'<path d="M4 20l9-9M14.5 5.5l4 4"/><path d="M16.5 3.5l1 1M20.5 7.5l1 1M15 9l1.5 1.5M19 5l1.5 1.5"/><path d="M13 11l-2-2"/>',
+  shelf:'<rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/><path d="M8 4v6M14 14v6"/>',
+  team:'<circle cx="9" cy="8" r="3"/><path d="M3.5 19a5.5 5.5 0 0111 0"/><circle cx="17.5" cy="9.5" r="2.2"/><path d="M15 19a4 4 0 016.5-3.1"/>',
+  chart:'<path d="M4 20V9M10 20V4M16 20v-7M22 20H2"/>',
+  wallet:'<rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18"/><circle cx="17" cy="14.5" r="1.3" fill="currentColor" stroke="none"/>',
+  grid:'<rect x="4" y="4" width="7" height="7" rx="1.6"/><rect x="13" y="4" width="7" height="7" rx="1.6"/><rect x="4" y="13" width="7" height="7" rx="1.6"/><rect x="13" y="13" width="7" height="7" rx="1.6"/>',
+  target:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".8" fill="currentColor" stroke="none"/>',
+  cap:'<path d="M12 3l9 4-9 4-9-4 9-4z"/><path d="M6 9v5c0 1.5 2.7 3 6 3s6-1.5 6-3V9"/>',
+  check:'<path d="M20 6L9 17l-5-5"/>',
+  link2:'<path d="M10.5 13.5a4 4 0 006 .5l2.5-2.5a4 4 0 00-5.7-5.7L12 7.2"/><path d="M13.5 10.5a4 4 0 00-6-.5L5 12.5a4 4 0 005.7 5.7L12 16.8"/>',
+  arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+};
+const TT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7V5h14v2M9 19h6M12 5v14"/></svg>';
+const PHONE='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 006.6 6.6l2.2-2.2a1 1 0 011-.24 11 11 0 003.4.55 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11 11 0 00.55 3.4 1 1 0 01-.24 1z"/></svg>';
+const AISPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a4 4 0 014 4v.5a4 4 0 010 9V17a4 4 0 01-8 0v-.5a4 4 0 010-9V7a4 4 0 014-4z"/></svg>';
+const BACK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 5l-7 7 7 7"/></svg>';
+function ic(n){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+(SVG[n]||SVG.info)+'</svg>';}
+
+/* ---------- state ---------- */
+const state = {
+  phase:'sms', trig:'gap',                       /* the text half */
+  role:'bc', seg:'growth',                       /* the app half   */
+  screen:'messages', fontStep:0, _detail:null, _detailId:null,
+  sec:null, node:null, playing:false, optedOut:false, guided:false, leftDeep:false, landedOn:null,
+  profileApplied:false,                          /* once true, the app derives from P */
+  appliedAt:null, fromApp:false                  /* profile opened from inside the app */
+};
+const FONT_STEPS = [1, 1.15, 1.32];
+const FONT_LABELS = ['Text size · Standard', 'Text size · Large', 'Text size · Extra large'];
+
+const ROLES = {
+  bc:    {label:'Practice & Retail Lead', sub:'Portfolio, ordering & sell-through', icon:'bc', lens:'Practice · Retail'},
+  ami:   {label:'Clinical Educator', sub:'Protocols & procedure pairing', icon:'ami', lens:'Clinical · Protocols'},
+  reimb: {label:'Commission & Reimbursement', sub:'Dispensing margin & payouts', icon:'reimb', lens:'Practice · Commission'},
+};
+
+/* account scenarios — same provider (Dr. Voss), different account state */
+const SEG = {
+  champ:{ name:'Champion · Platinum', accent:'var(--seg-champ)', tier:'Platinum · 82%', ringPct:82, churn:22,
+    greet:'Platinum partner · 82% to next tier',
+    msg:'Dr. Voss is a dispensing champion. Protect the relationship and open the body and tone categories she has not stocked.',
+    tag:{cls:'gold',txt:'Partner · Platinum'}, cta:'Plan a category-breadth review', ctaGo:'grow',
+    snap:[['$318K','Retail revenue','up','▲ 9%'],['94%','Protocol training','flat','Advanced done'],['22','Churn risk','up','Low · stable']] },
+  growth:{ name:'Growth · High Potential', accent:'var(--seg-growth)', tier:'Gold · 61%', ringPct:61, churn:64,
+    greet:'Procedure attach strong · daily regimen flat',
+    msg:'Strong post-procedure attach with almost no daily regimen behind it. The Regimen Builder is the unlock.',
+    tag:{cls:'',txt:'Stage · Grow & Protect'}, cta:'Open the Regimen Builder', ctaGo:'anatomy',
+    snap:[['$196K','Retail revenue','down','▼ 4%'],['71%','Protocol training','flat','2 modules open'],['64','Churn risk','down','Elevated']] },
+  risk:{ name:'At-Risk · Retention Watch', accent:'var(--seg-risk)', tier:'Gold · 48%', ringPct:48, churn:78,
+    greet:'⚠ Reorder 26 days overdue',
+    msg:'Replenishment has slipped and patients are running out between visits. This account needs a touch this week.',
+    tag:{cls:'risk',txt:'⚠ Retention Watch'}, cta:'See retention plays', ctaGo:'grow',
+    snap:[['$142K','Retail revenue','down','▼ 16%'],['64%','Protocol training','down','Stalled'],['78','Churn risk','down','High']] },
+  new:{ name:'New Account · Onboarding', accent:'var(--seg-new)', tier:'Silver · 40%', ringPct:40, churn:35,
+    greet:'Onboarding 40% complete',
+    msg:'Welcome Dr. Voss to the line. Build the core four-step routine first and enroll Auto-Replenish from day one.',
+    tag:{cls:'',txt:'Stage · Onboarding'}, cta:'Start the protocol continuum', ctaGo:'mylearning',
+    snap:[['$64K','Retail revenue','flat','New account'],['40%','Protocol training','flat','Foundational'],['35','Churn risk','flat','Building']] },
+};
+
+/* 16-tile module set (from the portal grid), reprioritized per segment */
+const TILES_BASE = {
+  affiliate:'Rewards & Commission', anatomy:'Regimen Builder', articles:'Studies & Evidence', brands:'Product Portfolio',
+  grow:'Grow Your Practice', conferences:'Events & Symposia', faqs:'FAQs', inclinic:'In-Practice Training',
+  online:'Online Training', prepare:'Prepare for Consults', centers:'Regional Workshops', mylearning:'My Learning',
+  safety:'Product Use & Safety', payments:'Payouts & Fees', kol:'Talk to a Peer Expert', toparticles:'Top Articles · Profile'
+};
+/* Which 9 of the 16 tiles show is hand-curated for every role × segment pair.
+   'safety' is always pinned last, so 8 slots swap with the scenario.
+   Each set also carries the signature tool (★) and a one-line rationale
+   shown under the grid so a demo audience can see WHY the grid changed. */
+const TILE_SETS = {
+  bc: {
+    champ:  { tiles:['grow','brands','toparticles','kol','conferences','anatomy','payments','affiliate'], star:'brands',
+              why:'Champion · category breadth and advocacy tools surface first — she already dispenses the core.' },
+    growth: { tiles:['anatomy','prepare','brands','toparticles','articles','online','affiliate','grow'], star:'anatomy',
+              why:'Growth · regimen and pre-consult tools lead, to turn post-procedure attach into daily routines.' },
+    risk:   { tiles:['grow','prepare','affiliate','faqs','inclinic','articles','kol','brands'], star:'grow',
+              why:'At-Risk · retention, replenishment and objection-handling tools crowd out breadth plays.' },
+    new:    { tiles:['mylearning','online','inclinic','centers','anatomy','brands','prepare','affiliate'], star:'mylearning',
+              why:'New Account · the grid becomes an onboarding path before it becomes a sales tool.' },
+  },
+  ami: {
+    champ:  { tiles:['kol','conferences','centers','anatomy','mylearning','toparticles','articles','inclinic'], star:'kol',
+              why:'Champion · faculty, peer and podium pathways — she is ready to teach, not be taught.' },
+    growth: { tiles:['anatomy','online','inclinic','mylearning','articles','centers','prepare','brands'], star:'anatomy',
+              why:'Growth · the advanced protocol track is the unlock, so training tools lead.' },
+    risk:   { tiles:['inclinic','mylearning','online','anatomy','kol','faqs','conferences','grow'], star:'inclinic',
+              why:'At-Risk · hands-on, in-practice support first — re-engagement through education.' },
+    new:    { tiles:['mylearning','online','centers','inclinic','anatomy','faqs','articles','conferences'], star:'mylearning',
+              why:'New Account · the full protocol continuum, foundational-first, with nothing else competing.' },
+  },
+  reimb: {
+    champ:  { tiles:['affiliate','payments','toparticles','grow','kol','brands','conferences','prepare'], star:'affiliate',
+              why:'Champion · replenishment depth and payout tracking for a high-volume dispensing account.' },
+    growth: { tiles:['affiliate','prepare','grow','payments','brands','faqs','anatomy','articles'], star:'affiliate',
+              why:'Growth · replenishment as the growth engine, paired with pre-consult planning.' },
+    risk:   { tiles:['grow','affiliate','prepare','payments','faqs','kol','articles','brands'], star:'grow',
+              why:'At-Risk · reorder, rebooking and lapsed-patient reactivation levers move to the front.' },
+    new:    { tiles:['affiliate','prepare','payments','faqs','brands','mylearning','online','grow'], star:'affiliate',
+              why:'New Account · enroll Auto-Replenish from day one and set the shelf up before volume arrives.' },
+  },
+};
+
+/* select & order 9 tiles for a role + segment ('safety' always pinned last) */
+function tileSetFor(role, seg){
+  const set = (TILE_SETS[role]||TILE_SETS.bc)[seg] || TILE_SETS.bc.growth;
+  return { tiles: set.tiles.concat('safety'), star: set.star, why: set.why };
+}
+
+/* ---------- Regimen Builder pathways (concern -> ALASTIN protocol) ---------- */
+const PATHWAYS = {
+  postprocedure:{brand:"Regenerating Skin Nectar with TriHex+\u2122",area:"Pre & post procedure",sub:"laser \u00b7 peel \u00b7 microneedling",module:"Procedure Enhancement Protocol",
+    points:["Built for the days around a resurfacing procedure \u2014 prepare the skin, then support it while it recovers.","Sell it at booking, not at checkout: it reads as part of the procedure rather than an add-on.","Resume per protocol once the barrier is intact, and photograph at the follow-up visit."]},
+  postinjection:{brand:"INhance Post-Injection Serum with TriHex Technology\u00ae",area:"After injectables",sub:"filler \u00b7 toxin \u00b7 biostimulator",module:"Injectable Pairing Protocol",
+    points:["Positioned for use after injectable treatments as part of the recovery routine.","Hand it over in the chair \u2014 attach rate collapses once the patient reaches the front desk.","Pairs naturally with the rebooking conversation for the next maintenance visit."]},
+  laxity:{brand:"Restorative Skin Complex with TriHex+\u2122",area:"Fine lines & firmness",sub:"daily anti-aging core",module:"Core Regimen Foundations",
+    points:["The daily anchor most regimens in this practice should be built around.","Position it as the everyday step between procedures, never as a substitute for one.","Easiest to introduce at the follow-up, when early procedure results are visible."]},
+  dryness:{brand:"HA (Hyaluronic Acid) IMMERSE Serum\u2122",area:"Dehydration & plumpness",sub:"hydration layer",module:"Core Regimen Foundations",
+    points:["For skin that reads tight, dull, or crepey by mid-afternoon.","Layers under moisturizer \u2014 the simplest second product for a one-SKU patient.","A low-commitment entry point for patients not ready for a full routine."]},
+  dullness:{brand:"ReSURFACE Skin Polish",area:"Texture & dullness",sub:"weekly polish",module:"Core Regimen Foundations",
+    points:["For the patient who describes their skin as rough, flat, or \u2018tired\u2019.","Set frequency expectations out loud \u2014 over-use is the most common at-home error.","Pause around resurfacing procedures and restart per the recovery protocol."]},
+  pigment:{brand:"A-LUMINATE Brightening Serum\u2122",area:"Uneven tone & dark spots",sub:"brightening",module:"Tone & Texture Protocol",
+    points:["For patients whose first complaint is unevenness rather than lines.","Pair it with daily SPF \u2014 without protection, tone work backslides.","Produces a strong 12-week photo story for the practice\u2019s own gallery."]},
+  environmental:{brand:"C-RADICAL Defense Antioxidant Serum",area:"Environmental defense",sub:"antioxidant \u00b7 AM",module:"Daily Defense Protocol",
+    points:["A morning step for patients with high sun, screen, or urban exposure.","Sequence it before sunscreen in the AM routine.","The natural second product for anyone already committed to SPF."]},
+  retinize:{brand:"Renewal Retinol",area:"Photoaging & turnover",sub:"0.25 \u00b7 0.5 retinol",module:"Retinol Onboarding",
+    points:["Start low and build frequency \u2014 tolerance, not strength, is what drives adherence.","Counsel on sun sensitivity and expected early dryness before they leave.","Hold around resurfacing procedures and restart per protocol."]},
+  eyes:{brand:"Restorative Eye Complex with TriHex Technology\u00ae",area:"Eye area",sub:"periorbital",module:"Targeted Area Protocols",
+    points:["A targeted step for the patient whose whole complaint is the eye area.","High perceived value \u2014 often the first product a patient repurchases unprompted.","Sets up the longer conversation about periorbital treatments."]},
+  neck:{brand:"Restorative Neck Complex with TriHex Technology\u00ae",area:"Neck & d\u00e9collet\u00e9",sub:"below the jawline",module:"Targeted Area Protocols",
+    points:["The zone patients notice last and complain about most \u2014 raise it before they do.","A natural pairing with skin-tightening and energy-device treatments.","Extends a face-only regimen into a second zone without a new procedure."]},
+  body:{brand:"TransFORM Body Treatment with TriHex Technology\u00ae",area:"Body & crepey skin",sub:"arms \u00b7 abdomen \u00b7 thighs",module:"Body Protocols",
+    points:["For crepey body texture, and alongside body-contouring treatments.","Opens a category most practices under-dispense or skip entirely.","Larger basket size \u2014 worth its own step in the consult."]},
+  surgery:{brand:"ReFORM & RePAIR Complex",area:"Post-surgical",sub:"recovery care \u00b7 body",module:"Body Protocols",
+    points:["Positioned for use after surgical procedures as part of recovery care, on the surgeon\u2019s instructions.","Introduce it at the pre-op visit so it is already in hand when the patient goes home.","The post-operative instructions govern when it starts \u2014 the product never sets the timeline."]},
+  spf:{brand:"HydraTint Pro Mineral SPF 36 \u00b7 SilkSHIELD\u00ae SPF 30",area:"Daily protection",sub:"tinted & untinted mineral",module:"Daily Defense Protocol",
+    points:["Tinted and untinted mineral options, so the patient has no excuse to skip it.","The step every regimen should close with, whatever the presenting concern.","Highest reorder rate in the line \u2014 the backbone of replenishment revenue."]},
+};
+const navState = { concern:null, history:'first', downtime:'low', plan:'single' };
+
+/* ---------- detail content ---------- */
+function detailContent(id){
+  const s = SEG[state.seg];
+  switch(id){
+    /* ---- interactive signature modules ---- */
+    case 'anatomy':   return { title:'Regimen Builder', sub:'Concern \u2192 ALASTIN protocol', interactive:'navigator' };
+    case 'affiliate': return { title:'Rewards & Commission', sub:'Auto-Replenish & practice earnings', interactive:'loyalty' };
+    case 'grow':      return { title:'Grow Your Practice', sub:'Retention, reorder & risk', interactive:'retention' };
+
+    case 'brands': return { title:'Product Portfolio', sub:'Categories · what the shelf covers', html:`
+      <p>The ALASTIN line at a glance — open the Regimen Builder to map any concern to its protocol.</p>
+      <div class="kv">
+        <div><b>Procedure</b><span>Regenerating Skin Nectar · INhance · Soothe + Protect</span></div>
+        <div><b>Anti-aging core</b><span>Restorative Skin Complex · HA IMMERSE · Renewal Retinol</span></div>
+        <div><b>Tone &amp; texture</b><span>A-LUMINATE · C-RADICAL · ReSURFACE</span></div>
+        <div><b>Targeted &amp; body</b><span>Eye · Neck Complex · TransFORM · ReFORM &amp; RePAIR</span></div>
+        <div><b>Sun protection</b><span>HydraTint Pro SPF 36 · SilkSHIELD® SPF 30</span></div>
+      </div>
+      ${shelfCallout()}
+      <div class="cta solid" data-act="nav">Open the Regimen Builder</div>
+      <div class="src">Categories shown for demo illustration. Follow each product’s current Directions for Use.</div>` };
+
+    case 'articles': return { title:'Studies & Evidence', sub:'Reviewed claims library', html:`
+      <div class="faq"><div class="q">TriHex Technology® — where it appears <span>+</span></div><div class="a">Which products in the line carry the TriHex platform, and how they sit across the procedure, daily, and targeted ranges. Mechanism and claims language comes from the approved product materials, not from this prototype.</div></div>
+      <div class="faq"><div class="q">Procedure enhancement — pre &amp; post use <span>+</span></div><div class="a">Overview of how the procedure line is sequenced around resurfacing and injectable treatments, and where the protocol pauses and resumes.</div></div>
+      <div class="faq"><div class="q">Daily regimen adherence &amp; reorder <span>+</span></div><div class="a">Directional look at how many steps a patient sustains at 90 days, and which step is dropped first. Sample data.</div></div>
+      <div class="faq"><div class="q">Tinted vs. untinted mineral SPF <span>+</span></div><div class="a">How to choose between HydraTint Pro and SilkSHIELD® by skin tone, procedure stage, and patient routine.</div></div>
+      <div class="src">Library limited to reviewed, approved-style materials. Illustrative.</div>` };
+
+    case 'conferences': return { title:'Events & Symposia', sub:'Regional and national', html:`
+      <p>Upcoming events in this territory — tap <b>Add</b> to put one on Dr. Voss’s calendar.</p>
+      <div class="course"><div class="cic prog">◆</div><div class="cm"><h4>Skin Health Symposium</h4><p>Sep 17 · Procedure pairing · live faculty</p></div>${calBtn('Skin Health Symposium','Procedure pairing · live faculty','2026-09-17','9:00 AM')}</div>
+      <div class="course"><div class="cic prog">◆</div><div class="cm"><h4>PNW Practice Roundtable</h4><p>Oct 8 · Dispensing &amp; retail · Seattle</p></div>${calBtn('PNW Practice Roundtable','Dispensing & retail · Seattle','2026-10-08','4:00 PM')}</div>
+      <div class="course"><div class="cic prog">◆</div><div class="cm"><h4>Live Webcast — Body &amp; Neck</h4><p>Nov 5 · Opening the body category</p></div>${calBtn('Live Webcast — Body & Neck','Opening the body category','2026-11-05','1:00 PM')}</div>
+      <div class="callout">She declined the last roundtable for a scheduling conflict — book the October date while you’re with her.</div>
+      <div class="cta solid" data-act="cal">Open her calendar</div>
+      <div class="src">Event dates illustrative.</div>` };
+
+    case 'faqs': return { title:'FAQs', sub:'Approved answers', html:`
+      <div class="faq"><div class="q">When does the patient start after a laser? <span>+</span></div><div class="a">Follow the procedure protocol for that treatment and the provider’s post-care instructions — the recovery step resumes once the skin barrier is intact, not on a fixed day.</div></div>
+      <div class="faq"><div class="q">Can retinol run alongside the procedure line? <span>+</span></div><div class="a">Retinol is typically held around resurfacing procedures and restarted per protocol. Counsel on sun sensitivity whenever it is in the routine.</div></div>
+      <div class="faq"><div class="q">Which step do patients drop first? <span>+</span></div><div class="a">Sunscreen and the weekly polish, in that order. Naming the step out loud at checkout is the cheapest adherence lever the practice has.</div></div>
+      <div class="faq"><div class="q">Tinted or untinted SPF? <span>+</span></div><div class="a">HydraTint Pro suits patients who want coverage post-procedure; SilkSHIELD® suits those who layer their own makeup. Both are mineral.</div></div>
+      <div class="src">Answers are illustrative prototype content, not Directions for Use.</div>` };
+
+    case 'inclinic': return { title:'In-Practice Training', sub:'Hands-on, in your practice', html:`
+      <p>A clinical educator works the protocol into the practice’s own patient flow — the fastest way to lift attach rate and get the whole team saying the same thing.</p>
+      <div class="bullet"><span class="b"></span><div>Tailored to the team’s current comfort level and the procedures they actually run.</div></div>
+      <div class="bullet"><span class="b"></span><div>Covers protocol sequencing, chair-side language, and the checkout handoff.</div></div>
+      <div class="bullet"><span class="b"></span><div>Recommended next: the daily regimen conversation for post-procedure patients.</div></div>
+      <h3>Hold a date</h3>
+      <div class="course"><div class="cic prog">●</div><div class="cm"><h4>In-practice coaching · half day</h4><p>Protocol &amp; chair-side language, her rooms</p></div>${calBtn('In-practice coaching · half day','With Dr. Amara Okafor · Clinical Educator','2026-09-24','9:00 AM')}</div>
+      <div class="course"><div class="cic todo">+</div><div class="cm"><h4>Front-desk &amp; checkout refresher</h4><p>Whole-practice session</p></div>${calBtn('Front-desk & checkout refresher','Whole-practice in-clinic session','2026-10-15','1:00 PM')}</div>
+      <div class="cta solid" data-act="team">Request an in-practice session</div>
+      <div class="src">Scheduling via your clinical educator. Illustrative.</div>` };
+
+    case 'online': return { title:'Online Training', sub:'Protocol learning continuum', html:`
+      <h3>Continuum — 71%</h3>
+      <div class="continuum">
+        <div class="cstep done"><span class="dot"></span><div class="lb">Foundational</div><div class="sub">Done</div></div>
+        <div class="cstep done"><span class="dot"></span><div class="lb">Intermediate</div><div class="sub">Done</div></div>
+        <div class="cstep current"><span class="dot"></span><div class="lb">Advanced</div><div class="sub">In prog</div></div>
+        <div class="cstep todo"><span class="dot"></span><div class="lb">Mastery</div><div class="sub">Locked</div></div>
+      </div>
+      <h3>On-demand modules</h3>
+      <p>Sessions run about 45 minutes. Add one to block the time — the reminder goes to her learning record too.</p>
+      <div class="course"><div class="cic prog">●</div><div class="cm"><h4>Procedure Enhancement Protocol</h4><p>2 of 4 sessions · resume</p></div>${calBtn('Procedure Enhancement Protocol · session 3','Online module','2026-09-04','4:00 PM')}</div>
+      <div class="course"><div class="cic todo">+</div><div class="cm"><h4>Core Regimen Foundations</h4><p>Advanced · her open gap</p></div>${calBtn('Core Regimen Foundations','Online · advanced module','2026-09-08','4:00 PM')}</div>
+      <div class="course"><div class="cic todo">+</div><div class="cm"><h4>Body Protocols</h4><p>TransFORM &amp; ReFORM sequencing</p></div>${calBtn('Body Protocols','Online · certification','2026-09-29','1:00 PM')}</div>
+      <div class="cta solid" data-act="nav">Practice with the Regimen Builder</div>
+      <div class="src">Illustrative online catalog.</div>` };
+
+    case 'prepare': return { title:'Prepare for Consults', sub:'Pre-visit planning', html:`
+      <div class="stat-row">
+        <div class="stat"><div class="big">1.6</div><div class="lbl">Products / patient</div><div class="vs">region 2.3</div></div>
+        <div class="stat"><div class="big">66%</div><div class="lbl">Returning patients</div><div class="vs">protect these</div></div>
+      </div>
+      <h3>By category · trailing 12 mo</h3>
+      <div class="bars">
+        <div class="barrow"><div class="nm">Procedure line</div><div class="track"><i style="width:96%"></i></div><div class="qty">1,240</div></div>
+        <div class="barrow"><div class="nm">Daily anti-aging</div><div class="track"><i style="width:34%"></i></div><div class="qty">418</div></div>
+        <div class="barrow"><div class="nm">Tone · body · SPF</div><div class="track"><i class="muted" style="width:5%"></i></div><div class="qty">61</div></div>
+      </div>
+      <h3>Pre-consult checklist</h3>
+      <div class="bullet"><span class="b"></span><div>Start from the patient’s primary concern in the Regimen Builder.</div></div>
+      <div class="bullet"><span class="b"></span><div>Name the whole routine, then decide together which two steps start today.</div></div>
+      <div class="bullet"><span class="b"></span><div>Confirm Auto-Replenish at checkout so the next reorder is already scheduled.</div></div>
+      <div class="cta solid" data-act="nav">Open the Regimen Builder</div>
+      <div class="src">Sample data.</div>` };
+
+    case 'centers': return { title:'Regional Workshops', sub:'Hands-on, near you', html:`
+      <p>Small-group workshops on protocol sequencing, procedure pairing, and the retail conversation.</p>
+      <div class="kv">
+        <div><b>West</b><span>Irvine, CA</span></div>
+        <div><b>Central</b><span>Chicago, IL</span></div>
+        <div><b>East</b><span>New York, NY</span></div>
+      </div>
+      <div class="callout">Workshops are built around live patient flow, so the team practices the handoff rather than hearing about it.</div>
+      <h3>Next open sessions</h3>
+      <div class="course"><div class="cic prog">◆</div><div class="cm"><h4>West · Procedure Pairing Lab</h4><p>Oct 1–2 · Irvine, CA</p></div>${calBtn('West · Procedure Pairing Lab','Irvine, CA · 2-day hands-on','2026-10-01','9:00 AM')}</div>
+      <div class="course"><div class="cic prog">◆</div><div class="cm"><h4>Central · Retail &amp; Regimen Intensive</h4><p>Nov 12 · Chicago, IL</p></div>${calBtn('Central · Retail & Regimen Intensive','Chicago, IL · hands-on','2026-11-12','9:00 AM')}</div>
+      <div class="cta solid" data-act="team">Ask about the next session</div>
+      <div class="src">Locations illustrative.</div>` };
+
+    case 'mylearning': return { title:'My Learning', sub:'Your protocol progress', html:`
+      <div class="stat-row">
+        <div class="stat"><div class="big">71%</div><div class="lbl">Continuum complete</div></div>
+        <div class="stat"><div class="big">18.5</div><div class="lbl">CE credits · 2026</div></div>
+      </div>
+      <h3>Coursework</h3>
+      ${courseworkHTML()}
+      <h3>Credentials</h3>
+      <div class="bullet"><span class="b"></span><div>Certified Protocol Provider — valid through 2027.</div></div>
+      <div class="bullet"><span class="b"></span><div>Advanced Protocol Provider — 1 module from eligibility.</div></div>
+      <div class="cta solid" data-act="nav">Open the Regimen Builder</div>
+      <div class="src">Illustrative.</div>` };
+
+    case 'safety': return { title:'Product Use & Safety', sub:'Cosmetic use · directions & care', html:`
+      <h3>General use</h3>
+      <div class="bullet"><span class="b"></span><div>These are cosmetic skincare products. They are not intended to diagnose, treat, cure, or prevent any disease.</div></div>
+      <div class="bullet"><span class="b"></span><div>For external use only. Avoid the immediate eye area unless the product is formulated for it, and keep out of reach of children.</div></div>
+      <h3>Sensitivity &amp; actives</h3>
+      <div class="bullet"><span class="b"></span><div>Patch-test on sensitive or reactive skin, and introduce one active at a time. Discontinue and refer if irritation persists.</div></div>
+      <div class="bullet"><span class="b"></span><div>Retinol increases sun sensitivity — pair it with daily SPF and hold it around resurfacing procedures per protocol.</div></div>
+      <h3>Around procedures</h3>
+      <div class="bullet"><span class="b"></span><div>The provider’s post-care instructions govern. Resume the routine only once the skin barrier is intact.</div></div>
+      <div class="callout">Report a suspected skin reaction or product-quality concern through the AI assistant — routed to a person, never auto-answered.</div>
+      <div class="cta solid" data-act="pi">Open full Directions for Use</div>
+      <div class="src">Illustrative summary. Each product’s current label and Directions for Use are authoritative.</div>` };
+
+    case 'payments': return { title:'Payouts & Fees', sub:'Commission, honoraria & transparency', html:`
+      <p>How the practice is paid — dispensing commission on sell-through, plus compensation for speaking, training, and advisory work.</p>
+      ${payoutReleasedHTML()}
+      <div class="kv">
+        <div><b>Dispensing commission</b><span>On in-practice and linked patient orders</span></div>
+        <div><b>Auto-Replenish share</b><span>Credited on each recurring shipment</span></div>
+        <div><b>Speaker honoraria</b><span>Per approved fair-market rate</span></div>
+        <div><b>Reporting</b><span>Statements monthly · transparency rules apply</span></div>
+      </div>
+      <div class="callout">Reorders placed by her patients between visits still credit to the practice — that is the case for enrolling every patient at checkout.</div>
+      <div class="cta solid" data-act="team">Review this month’s statement</div>
+      <div class="src">Illustrative. Commission structures and reporting obligations vary by agreement and jurisdiction.</div>` };
+
+    case 'toparticles': return { title:'Top Articles · Profile', sub:'Matched to her patient mix', html:`
+      <div class="callout plum">Because 92% of her retail volume is the procedure line and daily regimen is flat, these surface first:</div>
+      <div class="course"><div class="cic prog">★</div><div class="cm"><h4>From procedure to routine</h4><p>Turning one recovery kit into a regimen</p></div><div class="ctag">Read</div></div>
+      <div class="course"><div class="cic prog">★</div><div class="cm"><h4>Introducing tone work to a laser patient</h4><p>A-LUMINATE framing</p></div><div class="ctag">Read</div></div>
+      <div class="course"><div class="cic prog">★</div><div class="cm"><h4>Reorders that stick</h4><p>Auto-Replenish at the checkout step</p></div><div class="ctag">Read</div></div>
+      <div class="cta solid" data-act="nav">Plan it in the Regimen Builder</div>
+      <div class="src">Recommendations derived from this account’s category mix. Illustrative.</div>` };
+
+    case 'kol': return { title:'__contacts__' };
+    default:   return { title:'Module', sub:'', html:'<p>Coming soon in this prototype.</p>' };
+  }
+}
+
+/* ---------- interactive renderers ---------- */
+function navigatorHTML(){
+  /* the concern list is the same 13 the profile flow scores. Once a profile is
+     applied and names procedures, concerns that depend on procedures she does
+     not perform drop out of the picker — exactly what "What changed" promised. */
+  const narrowed = state.profileApplied && (P.offered||[]).length>0;
+  const concerns = (narrowed ? matchedConcerns() : CONCERNS).map(c=>[c.k,c.l]);
+  if(narrowed && navState.concern && !concerns.some(([k])=>k===navState.concern)) navState.concern=null;
+  const chips = concerns.map(([k,l])=>`<button class="nchip" data-concern="${k}" aria-pressed="${navState.concern===k}">${l}</button>`).join('');
+  return `<p>Start from the patient's primary concern, layer in their context, and the Builder surfaces the ALASTIN protocol, the chair-side talking points, and the matching training module.</p>
+    <div class="navwrap">
+      <div class="flab">Primary concern${narrowed?` <span class="flab-note">${concerns.length} of ${CONCERNS.length} · narrowed to what you perform</span>`:''}</div>
+      <div class="nchips" id="cChips">${chips}</div>
+      <div class="flab">Patient history</div>
+      <div class="nseg" id="sHist">
+        <button data-v="first" aria-pressed="${navState.history==='first'}">First-time</button>
+        <button data-v="returning" aria-pressed="${navState.history==='returning'}">Returning</button>
+      </div>
+      <div class="flab">Skin sensitivity</div>
+      <div class="nseg" id="sDown">
+        <button data-v="low" aria-pressed="${navState.downtime==='low'}">Sensitive</button>
+        <button data-v="some" aria-pressed="${navState.downtime==='some'}">Tolerant</button>
+      </div>
+      <div class="flab">Regimen scope</div>
+      <div class="nseg" id="sPlan">
+        <button data-v="single" aria-pressed="${navState.plan==='single'}">Single product</button>
+        <button data-v="combo" aria-pressed="${navState.plan==='combo'}">Full regimen</button>
+      </div>
+      <div id="recoOut">${navState.concern?recoHTML():'<div class="navempty"><div class="big">Select a primary concern</div><div>The Builder maps an ALASTIN protocol and the matching training module.</div></div>'}</div>
+    </div>
+    <div class="src">Protocols shown for demo illustration. Individualize per assessment and follow each product\u2019s current Directions for Use.</div>`;
+}
+function recoHTML(){
+  const p = PATHWAYS[navState.concern];
+  let ctx = [];
+  ctx.push(navState.history==='first'
+    ? 'First-time patient \u2014 start with two steps and a clear reason for each, not the whole shelf.'
+    : 'Returning patient \u2014 check adherence and reorder timing before adding anything new.');
+  ctx.push(navState.downtime==='low'
+    ? 'Sensitive skin \u2014 introduce one active at a time and build frequency slowly.'
+    : 'Tolerant skin \u2014 the full protocol can start at label frequency.');
+  const loyalty = navState.history==='first'
+    ? 'Enroll this patient in <b>Auto-Replenish</b> at checkout \u2014 first-visit sign-ups are what turn one purchase into a regimen.'
+    : 'Apply an <b>Auto-Replenish</b> reward to the next shipment so the replenishment cycle never breaks.';
+  let planBlock = '';
+  if(navState.plan==='combo'){
+    planBlock = `<h5>Full regimen</h5><ul>
+      <li>Frame this concern as one step in a cleanse \u2192 treat \u2192 moisturize \u2192 protect routine.</li>
+      <li>Full-regimen patients reorder more often and carry a materially larger basket.</li>
+      <li>Sequence the introductions across visits so tolerance and budget both hold.</li></ul>`;
+  }
+  return `<div class="reco">
+    <div class="brandname">${p.brand}</div>
+    <span class="area">${p.area} · ${p.sub}</span>
+    <h5>Consultation talking points</h5>
+    <ul>${p.points.map(x=>`<li>${x}</li>`).join('')}</ul>
+    <h5>Tailored to this patient</h5>
+    <ul>${ctx.map(x=>`<li>${x}</li>`).join('')}</ul>
+    ${planBlock}
+    <div class="tie"><span>◆</span><p>${loyalty}</p></div>
+    <div class="cta solid" style="margin:14px 0 0" data-act="train">Open protocol \u00b7 ${p.module}</div>
+  </div>`;
+}
+function wireNavigator(){
+  const root = screen.querySelector('#cChips'); if(!root) return;
+  root.querySelectorAll('.nchip').forEach(c=>c.onclick=()=>{ navState.concern=c.dataset.concern; refreshReco(); root.querySelectorAll('.nchip').forEach(x=>x.setAttribute('aria-pressed', x.dataset.concern===navState.concern)); });
+  [['#sHist','history'],['#sDown','downtime'],['#sPlan','plan']].forEach(([sel,key])=>{
+    const g=screen.querySelector(sel);
+    g.querySelectorAll('button').forEach(b=>b.onclick=()=>{ navState[key]=b.dataset.v; g.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed', x.dataset.v===navState[key])); refreshReco(); });
+  });
+}
+function refreshReco(){
+  const out=screen.querySelector('#recoOut'); if(!out) return;
+  out.innerHTML = navState.concern?recoHTML():'<div class="navempty"><div class="big">Select a primary concern</div><div>The Builder maps an ALASTIN protocol and the matching training module.</div></div>';
+  wireActs();
+}
+
+function loyaltyHTML(){
+  return `<p>The case for replenishment isn’t abstract — it’s visible in her own patient panel. Move the slider to model a quarter of new Auto-Replenish sign-ups.</p>
+    <div class="stat-row">
+      <div class="stat"><div class="big gold">62%</div><div class="lbl">Procedure patients on a regimen</div><div class="vs">1,290 patients</div></div>
+      <div class="stat"><div class="big gold">73%</div><div class="lbl">Reorder within 90 days</div><div class="vs">region 64%</div></div>
+    </div>
+    <h3>Auto-Replenish vs. one-time</h3>
+    <div class="cohort">
+      <div class="ch l">Metric</div><div class="ch">Enrolled</div><div class="ch">One-time</div>
+      <div class="divider"></div>
+      <div class="mt">Orders / year</div><div class="nm2 en">3.2</div><div class="nm2 non">1.2</div>
+      <div class="mt">12-mo retention</div><div class="nm2 en">79%</div><div class="nm2 non">46%</div>
+      <div class="mt">Products / order</div><div class="nm2 en">1.9</div><div class="nm2 non">1.3</div>
+      <div class="mt">Annual value</div><div class="nm2 en">$718</div><div class="nm2 non">$184</div>
+    </div>
+    <h3>Enrollment → revenue projector</h3>
+    <div class="projbox">
+      <div class="projhead"><span class="lab">New enrollments / quarter</span><span class="val" id="enrollVal">40</span></div>
+      <input type="range" id="enrollSlider" min="0" max="120" value="40" step="5" aria-label="New Auto-Replenish enrollments per quarter">
+      <div class="prow"><div class="pl">Incremental orders / yr</div><div class="pv gold" id="pVisits">+320</div></div>
+      <div class="prow"><div class="pl">Added products dispensed</div><div class="pv plum" id="pUnits">+608</div></div>
+      <div class="prow"><div class="pl">Estimated added retail</div><div class="pv" id="pValue">+$85,440</div></div>
+      <div class="prow"><div class="pl">Practice share <small>at an assumed 35%</small></div><div class="pv gold" id="pComm">+$29,904</div></div>
+    </div>
+    <div class="src" style="margin-top:10px">Each row traces to the table above: 160 enrollments a year \u00d7 (3.2 \u2212 1.2) incremental orders, \u00d7 1.9 products, \u00d7 the $718 \u2212 $184 annual delta. The 35% practice share is a placeholder rate \u2014 replace it with the client\u2019s actual terms before this is shown.</div>
+    <h3>How to use replenishment to grow the shelf</h3>
+    <div class="bullet"><span class="b"></span><div><b>Reframe the value:</b> an enrolled patient is worth close to 4× a one-time buyer over a year. Replenishment is a retention engine, not a discount.</div></div>
+    <div class="bullet"><span class="b"></span><div><b>Move it to checkout:</b> enrollment happens at the front desk or not at all — reorders placed later still credit to the practice.</div></div>
+    <div class="bullet"><span class="b"></span><div><b>Pair with the plan:</b> use a Regimen Builder full-regimen plan so one concern becomes a standing four-step routine.</div></div>
+    <div class="src">Illustrative model using this account’s enrolled vs. one-time deltas. Directional, for practice conversation.</div>`;
+}
+function wireLoyalty(){
+  const sl=screen.querySelector('#enrollSlider'); if(!sl) return;
+  const fmt=n=>n.toLocaleString('en-US');
+  const upd=()=>{ const n=+sl.value, annual=n*4, orders=Math.round(annual*2.0), products=Math.round(orders*1.9),
+      retail=Math.round(annual*534), comm=Math.round(retail*0.35);
+    screen.querySelector('#enrollVal').textContent=n;
+    screen.querySelector('#pVisits').textContent='+'+fmt(orders);
+    screen.querySelector('#pUnits').textContent='+'+fmt(products);
+    screen.querySelector('#pValue').textContent='+$'+fmt(retail);
+    screen.querySelector('#pComm').textContent='+$'+fmt(comm); };
+  sl.oninput=upd; upd();
+}
+
+function retentionHTML(){
+  const s=SEG[state.seg]; const churn=s.churn; const L=207.3; const off=(L*(1-churn/100)).toFixed(1);
+  const col = churn>=60?'var(--alert)':(churn>=40?'#7B6BA0':'var(--good)');
+  const lvl = churn>=60?'Elevated':(churn>=40?'Watch':'Low');
+  return `<div class="gaugewrap">
+      <div class="gauge">
+        <svg width="150" height="90" viewBox="0 0 160 96">
+          <path d="M14 90 A66 66 0 0 1 146 90" fill="none" stroke="#E3E0E5" stroke-width="13" stroke-linecap="round"/>
+          <path d="M14 90 A66 66 0 0 1 146 90" fill="none" stroke="${col}" stroke-width="13" stroke-linecap="round" stroke-dasharray="${L}" stroke-dashoffset="${off}"/>
+        </svg>
+        <div class="glab"><div class="gv" style="color:${col}">${churn}</div><div class="gc">of 100 · ${lvl}</div></div>
+      </div>
+      <div style="flex:1;min-width:180px">
+        <div class="driver"><span class="di bad">!</span><div><b>Reorder lag</b> — 64 days since order</div><span class="dv">avg 38d</span></div>
+        <div class="driver"><span class="di bad">!</span><div><b>Patient reorder rate</b> below benchmark</div><span class="dv">61/68%</span></div>
+        <div class="driver"><span class="di ${stockedCount()>=4?'good':'mid'}">${stockedCount()>=4?'✓':'~'}</span><div><b>Categories</b> stocked</div><span class="dv">${stockedCount()} / ${CATS.length}</span></div>
+        <div class="driver"><span class="di mid">~</span><div><b>Training</b> advanced stalled</div><span class="dv">0 / 2</span></div>
+      </div>
+    </div>
+    <h3>Engagement timeline</h3>
+    <div class="tl">
+      <div class="tli"><span class="td"></span><div class="tdt">12 days ago</div><div class="ttx"><b>Field visit</b> — discussed daily-regimen attach</div></div>
+      <div class="tli good"><span class="td"></span><div class="tdt">3 weeks ago</div><div class="ttx"><b>Webcast</b> — Procedure Enhancement, session 2 of 4</div></div>
+      <div class="tli"><span class="td"></span><div class="tdt">5 weeks ago</div><div class="ttx"><b>Order placed</b> — procedure line restock</div></div>
+      <div class="tli gold"><span class="td"></span><div class="tdt">2 months ago</div><div class="ttx"><b>Auto-Replenish</b> — 22 patients enrolled</div></div>
+      <div class="tli"><span class="td"></span><div class="tdt">3 months ago</div><div class="ttx"><b>Roundtable</b> declined — calendar conflict</div></div>
+    </div>
+    <h3>Retention plays</h3>
+    <div class="play"><div style="display:flex;gap:10px;align-items:flex-start"><div style="flex:1"><h4><span class="pd"></span>Re-engage the reorder cycle</h4><p>She’s 26 days past her usual cadence — her shelf is thin and patients are running out. Trigger a restock conversation this week.</p></div>${calBtn('Reorder conversation · restock','Field follow-up with Dr. Voss','2026-09-01','9:00 AM')}</div></div>
+    <div class="play"><div style="display:flex;gap:10px;align-items:flex-start"><div style="flex:1"><h4><span class="pd"></span>Close the training gap</h4><p>Schedule Core Regimen Foundations — the missing piece before Advanced Protocol Provider eligibility.</p></div>${calBtn('Core Regimen Foundations','Online · advanced module','2026-09-08','4:00 PM')}</div></div>
+    <div class="play"><h4><span class="pd"></span>Turn on Auto-Replenish reminders</h4><p>Shipment reminders to lift patient reorder rate from 61% toward 68% — worth roughly 320 additional orders a year.</p></div>
+    <div class="play"><h4><span class="pd"></span>Open the missing categories</h4><p>Use a Regimen Builder full-regimen plan to introduce tone, neck and body steps to existing patients.</p></div>
+    <div class="cta solid" data-act="team">Build the plan with your team</div>
+    <div class="src">Churn score reflects the selected account stage. Sample data.</div>`;
+}
+
+/* ---------- AI ---------- */
+const AI_INTRO = "Hi — I'm the ALASTIN practice assistant. I answer from approved-style product, protocol and program content only. Ask about a protocol, procedure pairing, Auto-Replenish, or which training closes her gap.";
+const AI_SUGGEST = ['What pairs with a laser patient?','When does retinol restart?','How does Auto-Replenish affect reorders?','What training closes her gap?'];
+function aiAnswer(q){
+  const t=q.toLowerCase(); const has=(...k)=>k.some(w=>t.includes(w));
+  if(has('reaction','rash','burn','irritat','allerg','adverse','side effect','breakout','complaint','contaminat','product quality','defect','report a','pregnan','swelling')) return {
+    escal:true, text:"That sounds like it may involve a skin reaction or a product-quality concern. I don't handle those automatically — I'm connecting you to a person on the medical team who can take the details safely.", tag:'Routed to a human · Medical Information' };
+  if(has('cure ','diagnos','prescri','off label','off-label','treat a condition','treat acne','treat rosacea','treat eczema','my patient who','mix with','combine with a')) return {
+    escal:true, text:"These are cosmetic skincare products, so I can't speak to treating a condition or to an individual patient's clinical plan. I'll route you to a clinical educator rather than answer that here.", tag:'Routed to a human · Clinical Educator' };
+  if(has('skin quality','glow','radiance','luminos','overall skin','skin health')) return {
+    text:"Skin quality is the whole daily core: Restorative Skin Complex, HA IMMERSE for hydration, C-RADICAL in the morning and SPF to hold the result. It is the conversation that turns a procedure patient into a standing routine — and it is exactly where this account is thin.", tag:'Source: core regimen (illustrative)' };
+  if(has('trihex','technology','what is in','ingredient','formula')) return {
+    text:"TriHex Technology\u00ae is the platform ALASTIN builds the line around — it appears across the procedure products, the daily core, and the targeted and body range. For how it is described and what may be claimed, use the approved product materials rather than this assistant.", tag:'Source: product platform (illustrative)' };
+  if(has('categor','shelf','stock','missing','breadth','gap in the line')) return {
+    text:shelfSentence(), tag:'Source: category mix (illustrative)' };
+  if(has('laser','peel','microneedl','resurfac','procedure','ipl','downtime','recovery')) return {
+    text:"Around resurfacing procedures the practice uses the Procedure Enhancement Protocol: Regenerating Skin Nectar with TriHex+ before and after, with Soothe + Protect Recovery Balm during the sensitive window. The provider's post-care instructions govern timing — resume once the barrier is intact.", tag:'Source: procedure protocol (illustrative)' };
+  if(has('inject','filler','toxin','inhance','post-injection','biostimul')) return {
+    text:"INhance Post-Injection Serum is the injectable pairing step — handed over in the chair, not at the front desk. Attach rate falls sharply once the patient stands up, so it belongs in the same motion as the rebooking conversation.", tag:'Source: pairing protocol (illustrative)' };
+  if(has('retinol','retin','photoag','turnover')) return {
+    text:"Renewal Retinol comes in 0.25 and 0.5. Start low and build frequency — tolerance, not strength, drives adherence. Counsel on sun sensitivity, pair it with daily SPF, and hold it around resurfacing procedures, restarting per protocol.", tag:'Source: retinol onboarding (illustrative)' };
+  if(has('spf','sunscreen','sun protect','hydratint','silkshield','mineral')) return {
+    text:"Two mineral options: HydraTint Pro Mineral SPF 36 for patients who want coverage post-procedure, and SilkSHIELD SPF 30 for those layering their own makeup. SPF has the highest reorder rate in the line and is the step patients drop first — name it out loud at checkout.", tag:'Source: product categories (illustrative)' };
+  if(has('tone','pigment','dark spot','bright','a-luminate','aluminate','texture','dull','resurface polish')) return {
+    text:"A-LUMINATE Brightening Serum is the tone step and ReSURFACE Skin Polish the texture step. Both need daily SPF behind them or the result backslides. This account dispenses almost none of the tone category — it's the clearest open shelf.", tag:'Source: category mix (illustrative)' };
+  if(has('body','neck','decollete','décolleté','transform','crepey','eye')) return {
+    text:"The targeted and body category covers Restorative Eye Complex, Restorative Neck Complex, and TransFORM Body Treatment. It carries the largest basket size and is the category most practices skip entirely — including this one.", tag:'Source: category mix (illustrative)' };
+  if(has('regimen','routine','daily','core','restorative skin complex','immerse','hydrat')) return {
+    text:"The daily core is Restorative Skin Complex with TriHex+, with HA IMMERSE Serum as the hydration layer and C-RADICAL in the morning. Sequence it as cleanse → treat → moisturize → protect, and start a first-time patient on two steps rather than four.", tag:'Source: core regimen (illustrative)' };
+  if(has('replenish','auto','loyalty','reward','reorder','retention','enroll','commission','payout')) return {
+    text:"In her panel, Auto-Replenish patients place 3.2 orders a year vs 1.2 for one-time buyers, and retain at 79% vs 46% — $718 vs $184 in annual value. Reorders placed between visits still credit to the practice, which is the whole case for enrolling at checkout.", tag:'Source: account replenishment data (illustrative)' };
+  if(has('train','module','education','course','gap','protocol training','certif')) return {
+    text:"Her open gap is the Advanced 'Core Regimen Foundations' module — the unlock for the daily-routine conversation and the last step before Advanced Protocol Provider eligibility. It pairs directly with the Regimen Builder.", tag:'Source: learning continuum (illustrative)' };
+  if(has('churn','risk','at risk','at-risk','overdue')) return {
+    text:`The churn model flags reorder lag (64 days vs 38 avg), below-benchmark patient reorder rate (61% vs 68%), ${stockedCount()} of ${CATS.length} categories stocked, and a stalled advanced track. Grow Your Practice lists the plays for each.`, tag:'Source: retention model (illustrative)' };
+  if(has('hi','hello','hey','help','what can you')) return {
+    text:"I can answer from approved-style product and protocol content — try asking what pairs with a laser patient, when retinol restarts, how Auto-Replenish affects reorders, or which training closes her gap.", tag:'' };
+  return { escal:true, text:"I can only answer from approved-style materials and I don't have an approved answer for that. I can connect you with a clinical educator.", tag:'No approved match · educator available' };
+}
+
+/* ---------- contacts (role-aware order) ---------- */
+const CONTACTS = [
+  {name:'Sarah Lin', role:'Practice & Retail Consultant', sub:'Portfolio, ordering & sell-through', color:'linear-gradient(135deg,#6B5C86,#241B36)', init:'SL'},
+  {name:'Dr. Amara Okafor', role:'Clinical Educator', sub:'Protocols & procedure pairing', color:'linear-gradient(135deg,#4C6B58,#354C3F)', init:'AO'},
+  {name:'Dr. Lena Marchetti', role:'Faculty · Peer Expert', sub:'Case review & practice protocols', color:'linear-gradient(135deg,#3C2F55,#241B36)', init:'LM'},
+  {name:'James Carter', role:'Commission & Reimbursement Lead', sub:'Payouts, statements & Auto-Replenish', color:'linear-gradient(135deg,#7B6BA0,#4E4170)', init:'JC'},
+];
+
+/* ============================================================ CALENDAR
+   Training / event rows carry an "Add" button. It opens a bottom-sheet
+   month picker, and confirmed items land in the in-app calendar tab. */
+const TODAY = new Date(2026, 7, 27);            // demo "today" — 27 Aug 2026
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MON3   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DOW    = ['S','M','T','W','T','F','S'];
+const key = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const parseKey = k => { const [y,m,d]=k.split('-').map(Number); return new Date(y,m-1,d); };
+
+/* seeded items differ by segment, so the calendar tells the segment's story too */
+const CAL_SEEDS = {
+  champ: [{t:'Category-breadth planning visit',   s:'With Sarah Lin · Practice Consultant', d:'2026-09-03', tm:'10:00 AM'},
+          {t:'Faculty nomination review',        s:'Speaker pathway · advisory',           d:'2026-09-22', tm:'1:00 PM'}],
+  growth:[{t:'Core Regimen Foundations module',  s:'Online · closes her training gap',     d:'2026-09-08', tm:'4:00 PM'},
+          {t:'Daily-regimen follow-up visit',    s:'With Sarah Lin · Practice Consultant', d:'2026-09-15', tm:'11:00 AM'}],
+  risk:  [{t:'Reorder follow-up call',           s:'26 days past usual cadence · urgent',  d:'2026-08-31', tm:'9:00 AM'},
+          {t:'In-practice retention session',    s:'With Dr. Amara Okafor · Educator',     d:'2026-09-10', tm:'2:00 PM'}],
+  new:   [{t:'Foundational protocol · session 3',s:'Online continuum',                     d:'2026-09-02', tm:'4:00 PM'},
+          {t:'Auto-Replenish walkthrough',       s:'With James Carter · Commission Lead',  d:'2026-09-09', tm:'10:00 AM'}],
+};
+let calItems = [];
+let calCursor = new Date(2026, 8, 1);           // month shown in the calendar tab
+function seedCalendar(){
+  calItems = (CAL_SEEDS[state.seg]||[]).map((e,i)=>({id:'seed'+i, ...e, seed:true}));
+  calCursor = new Date(2026, 8, 1);
+}
+function calFor(k){ return calItems.filter(e=>e.d===k); }
+function addCalItem(e){
+  if(calItems.some(x=>x.t===e.t && x.d===e.d)) return false;
+  calItems.push({id:'c'+Date.now()+Math.random().toString(36).slice(2,5), ...e});
+  calItems.sort((a,b)=>a.d.localeCompare(b.d) || a.t.localeCompare(b.t));
+  return true;
+}
+function removeCalItem(id){ calItems = calItems.filter(e=>e.id!==id); }
+function isBooked(title){ return calItems.some(e=>e.t===title); }
+
+const CALICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>';
+const PLUSICON='<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>';
+const TICK='<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
+
+/* an "add to calendar" button for a training / event row */
+function calBtn(title, sub, date, time){
+  const on = isBooked(title);
+  return `<button class="calbtn${on?' added':''}" ${on?'disabled':''}
+    data-cal-t="${title.replace(/"/g,'&quot;')}" data-cal-s="${sub.replace(/"/g,'&quot;')}"
+    data-cal-d="${date}" data-cal-tm="${time}">${on?TICK+'Added':PLUSICON+'Add'}</button>`;
+}
+
+/* ---- month grid ---- */
+function monthGrid(cursor, selectedKey, opts){
+  opts = opts||{};
+  const y=cursor.getFullYear(), m=cursor.getMonth();
+  const first=new Date(y,m,1).getDay(), len=new Date(y,m+1,0).getDate();
+  let cells = DOW.map(d=>`<div class="dh">${d}</div>`).join('');
+  for(let i=0;i<first;i++) cells+='<div class="calday mute"></div>';
+  for(let d=1;d<=len;d++){
+    const k=key(new Date(y,m,d));
+    const has=opts.dots!==false && calFor(k).length>0;
+    const isToday=k===key(TODAY);
+    cells+=`<button class="calday${isToday?' today':''}" data-day="${k}" aria-pressed="${k===selectedKey}">${d}${has?'<span class="ev"></span>':''}</button>`;
+  }
+  return `<div class="calnav">
+      <button data-mon="-1" aria-label="Previous month">‹</button>
+      <b>${MONTHS[m]} ${y}</b>
+      <button data-mon="1" aria-label="Next month">›</button>
+    </div><div class="calgrid">${cells}</div>`;
+}
+
+/* ---- bottom sheet ---- */
+const sheetState = { open:false, title:'', sub:'', dateKey:'', time:'', cursor:null };
+const TIME_OPTIONS = ['9:00 AM','11:00 AM','1:00 PM','4:00 PM'];
+function openCalSheet(title, sub, date, time){
+  Object.assign(sheetState, {open:true, title, sub, dateKey:date, time:time||'9:00 AM', cursor:parseKey(date)});
+  drawSheet();
+}
+function closeCalSheet(){ sheetState.open=false; const el=document.getElementById('calSheet'); if(el) el.remove(); }
+function drawSheet(){
+  let el=document.getElementById('calSheet');
+  if(!el){ el=document.createElement('div'); el.className='sheetwrap'; el.id='calSheet'; document.querySelector('.screen').appendChild(el); }
+  el.innerHTML = `<div class="sheetscrim" data-close="1"></div>
+    <div class="sheet">
+      <div class="grab"></div>
+      <h3>Add to calendar</h3>
+      <div class="sub">${sheetState.title}${sheetState.sub?' · '+sheetState.sub:''}</div>
+      ${monthGrid(sheetState.cursor, sheetState.dateKey, {dots:false})}
+      <div class="flab">Time</div>
+      <div class="timerow">${TIME_OPTIONS.map(t=>`<button class="timechip" data-time="${t}" aria-pressed="${t===sheetState.time}">${t}</button>`).join('')}</div>
+      <div class="sheetbtns">
+        <button class="sbtn-x" data-close="1">Cancel</button>
+        <button class="sbtn-ok" id="calConfirm">Add ${MON3[parseKey(sheetState.dateKey).getMonth()]} ${parseKey(sheetState.dateKey).getDate()}</button>
+      </div>
+    </div>`;
+  el.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeCalSheet);
+  el.querySelectorAll('.calday[data-day]').forEach(b=>b.onclick=()=>{ sheetState.dateKey=b.dataset.day; drawSheet(); });
+  el.querySelectorAll('[data-mon]').forEach(b=>b.onclick=()=>{ sheetState.cursor.setMonth(sheetState.cursor.getMonth()+ +b.dataset.mon); drawSheet(); });
+  el.querySelectorAll('[data-time]').forEach(b=>b.onclick=()=>{ sheetState.time=b.dataset.time; drawSheet(); });
+  el.querySelector('#calConfirm').onclick=()=>{
+    const d=parseKey(sheetState.dateKey);
+    const ok=addCalItem({t:sheetState.title, s:sheetState.sub, d:sheetState.dateKey, tm:sheetState.time});
+    closeCalSheet();
+    render();
+    toast(ok ? `Added · ${MON3[d.getMonth()]} ${d.getDate()}, ${sheetState.time}` : 'Already on your calendar');
+  };
+}
+
+/* ---- calendar screen ---- */
+let calSelected = null;
+function renderCalendar(){
+  const selKey = calSelected || key(TODAY);
+  const dayItems = calFor(selKey);
+  const upcoming = calItems.filter(e=>parseKey(e.d)>=TODAY).sort((a,b)=>a.d.localeCompare(b.d));
+  const sel = parseKey(selKey);
+  const agenda = (dayItems.length?dayItems:upcoming).map(e=>{
+    const d=parseKey(e.d);
+    return `<div class="agitem${e.seed?'':' gold'}">
+      <div class="dbox"><div class="m">${MON3[d.getMonth()]}</div><div class="d">${d.getDate()}</div></div>
+      <div class="am"><h4>${e.t}</h4><p>${e.tm}${e.s?' · '+e.s:''}</p></div>
+      <button class="rm" data-rm="${e.id}" title="Remove">×</button>
+    </div>`;
+  }).join('') || `<div class="navempty"><div class="big">Nothing scheduled</div><div>Open a training or event module and tap Add.</div></div>`;
+  screen.innerHTML = statusBar() + `<div class="calscreen fade">
+      <div class="dhead"><button class="back" onclick="go('hub')">${BACK}</button>
+        <div class="dt">Calendar<small>${calItems.length} item${calItems.length===1?'':'s'} · training &amp; visits</small></div></div>
+      <div class="calbody">
+        <div class="calcard">${monthGrid(calCursor, selKey)}</div>
+        <div class="agenda">
+          <div class="flab" style="color:var(--mut)">${dayItems.length?`${MONTHS[sel.getMonth()]} ${sel.getDate()}`:'Upcoming'}</div>
+          ${agenda}
+        </div>
+        <div class="src">Calendar entries are local to this prototype. In the full app they sync to the practice's Outlook / Google calendar and to the ALASTIN learning record.</div>
+      </div>
+    </div>`;
+  screen.querySelectorAll('.calday[data-day]').forEach(b=>b.onclick=()=>{ calSelected=b.dataset.day; renderCalendar(); });
+  screen.querySelectorAll('[data-mon]').forEach(b=>b.onclick=()=>{ calCursor=new Date(calCursor.getFullYear(), calCursor.getMonth()+ +b.dataset.mon, 1); calSelected=null; renderCalendar(); });
+  screen.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{ removeCalItem(b.dataset.rm); renderCalendar(); toast('Removed from calendar'); });
+}
+
+/* ============================================================ RENDER */
+const screen = document.getElementById('screen');
+let navStack = [];
+
+function statusBar(){
+  return `<div class="status"><span>9:41</span>
+    <span class="dots"><span class="sig"></span>
+    <svg width="16" height="11" viewBox="0 0 16 11" fill="#1E1E1E"><path d="M8 1a7 7 0 015 2l-1 1a5.5 5.5 0 00-8 0L3 3a7 7 0 015-2zM8 5a3 3 0 012.2 1l-2.2 2.2L5.8 6A3 3 0 018 5z"/></svg>
+    <span class="bar"></span></span></div>`;
+}
+function brand(){
+  return `<div class="brand"><div class="wordmark">Alastin</div><div class="tag">Practice 360°</div></div>`;
+}
+function ring(pct){
+  const C=257.6, off=(C*(1-pct/100)).toFixed(1);
+  return `<div class="idring"><svg width="58" height="58" viewBox="0 0 92 92" style="transform:rotate(-90deg)">
+    <circle cx="46" cy="46" r="41" fill="none" stroke="#E3E0E5" stroke-width="7"/>
+    <circle cx="46" cy="46" r="41" fill="none" stroke="#7B6BA0" stroke-width="7" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${off}"/>
+  </svg><span class="mono">EV</span></div>`;
+}
+
+const APP_SCREENS = ['role','hub','ai','contacts','calendar','detail'];
+function render(){
+  document.documentElement.style.setProperty('--fs', FONT_STEPS[state.fontStep]);
+  state.phase = APP_SCREENS.includes(state.screen) ? 'app' : 'sms';
+  syncJourney();
+  /* the text half */
+  if(state.screen==='messages') return renderMessages();
+  if(state.screen==='profile')  return renderProfile();
+  if(state.screen==='section'){
+    if(!SECTIONS.some(x=>x.id===state.sec)){ state.screen='profile'; state.guided=false; return renderProfile(); }
+    return renderSection();
+  }
+  if(state.screen==='changed')  return renderChanged();
+  if(state.screen==='handoff')  return renderHandoff();
+  /* the app half */
+  if(state.screen==='role')     return renderRole();
+  if(state.screen==='hub')      return renderHub();
+  if(state.screen==='ai')       return renderAI();
+  if(state.screen==='contacts') return renderContacts();
+  if(state.screen==='calendar') return renderCalendar();
+  if(state.screen==='detail')   return renderDetail();
+}
+
+function renderRole(){
+  const cards = Object.entries(ROLES).map(([k,r])=>`
+    <div class="role-card" onclick="pickRole('${k}')">
+      <div class="ric">${ic(r.icon)}</div>
+      <div class="rt"><b>${r.label}</b><span>${r.sub}</span></div>
+      <div class="arr"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg></div>
+    </div>`).join('');
+  screen.innerHTML = statusBar() + `<div class="appbar">${brand()}</div>
+    <div class="role-screen fade">
+      <div class="role-hero"><h2>Your practice 360°, <span class="hl">tailored to you.</span></h2>
+      <p>Confirm how you work with ALASTIN so the account opens with the priorities that match your day. No login.</p></div>
+      <div class="role-list">${cards}</div>
+      ${demoSetupHTML()}
+    </div>`;
+}
+function pickRole(k){ state.role=k; syncConsole(); tileSwap=true; go('hub'); }
+
+function renderHub(){
+  const r=ROLES[state.role], s=SEG[state.seg];
+  const set=hubTiles(state.profileApplied);
+  const order=set.tiles, star=set.star;
+  const p=pct();
+  const pstrip = state.profileApplied
+    ? `<div class="pstrip"><span class="pv3">${p}%</span>
+         <div class="pm"><b>Practice profile · applied ${state.appliedAt||''}</b><span>${p===100?'Complete. The grid, the Builder and the training order all follow it.':'Grid, Builder and training follow what you told us. The rest is still guesswork.'}</span></div>
+         <button onclick="openProfileFromApp()">Edit</button></div>`
+    : `<div class="pstrip warn"><span class="pv3">${p}%</span>
+         <div class="pm"><b>Practice profile · incomplete</b><span>Until it says what you perform, the app sorts by account stage and guesses the rest.</span></div>
+         <button onclick="openProfileFromApp()">Complete</button></div>`;
+  const tiles=order.map((id,i)=>`<div class="tile" style="animation-delay:${i*32}ms" onclick="openTile('${id}')">${star===id?'<span class="star">★</span>':''}<div class="ic">${ic(id)}</div><span>${TILES_BASE[id]}</span></div>`).join('');
+  const badge=calItems.length?`<span class="calbadge">${calItems.length}</span>`:'';
+  screen.innerHTML = statusBar() + `
+    <div class="appbar">${brand()}
+      <div class="appbar-row">
+        <span class="prov-pill">Practice Partner</span>
+        <div style="display:flex;gap:8px">
+          <button class="icon-btn rel" title="Calendar" onclick="go('calendar')"><span style="width:18px;height:18px;display:block">${CALICON}</span>${badge}</button>
+          <button class="icon-btn" title="Text size" onclick="toggleFont()">${TT}</button>
+          <button class="icon-btn" title="Switch role" onclick="go('role')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+        </div>
+      </div>
+      <div class="specialty"><span class="d"></span>${P.specialty||'Dermatology'} · Bellevue, WA · ${r.lens}</div>
+    </div>
+    <div class="body fade">
+      <div class="greet"><div class="av">EV</div><div><div class="t1">Good morning — Dr. Elena Voss</div><div class="t2">${state.profileApplied?(p===100?'Profile complete · protocols matched':`Profile ${p}% · matched to what you told us`):s.greet}</div></div></div>
+      ${pstrip}
+      <div class="idstrip">${ring(s.ringPct)}
+        <div class="idmeta"><b>Dr. Elena Voss, MD</b><span>Radiance Dermatology &amp; Aesthetics · ALASTIN partner since 2021</span>
+          <div class="idtags"><span class="minitag ${s.tag.cls}">${s.tag.txt}</span><span class="minitag gold">${s.tier}</span></div>
+        </div>
+      </div>
+      <div class="snap">
+        ${s.snap.map(([v,l,d,dt])=>`<div class="s"><div class="v">${v}</div><div class="l">${l}</div><div class="d ${d}">${dt}</div></div>`).join('')}
+      </div>
+      <div class="pmsg-label" style="color:${s.accent}">Priority · ${s.name}</div>
+      <div class="pmsg" style="border-color:${s.accent}55;background:${s.accent}0d">
+        <div class="ic" style="background:${s.accent}">${ic('bulb')}</div><p>${s.msg}</p>
+      </div>
+      <div class="sec">360° Modules · ${s.name.split(' · ')[0]}</div>
+      <div class="tiles${tileSwap?' swap':''}" id="tileGrid">${tiles}</div>
+      <div class="src" style="margin:8px 20px 0;padding-top:9px;font-size:calc(10px*var(--fs))">${set.why}</div>
+      <div class="cta" style="border-color:${s.accent};color:${s.accent}" onclick="openTile('${s.ctaGo}')">${s.cta}</div>
+      <div style="height:8px"></div>
+    </div>
+    <div class="tabbar">
+      <button class="tb prof" title="Practice profile" onclick="openProfileFromApp()"><span style="width:19px;height:19px;display:block">${ic('person')}</span>${state.profileApplied?'':'<span class="calbadge">!</span>'}</button>
+      <button class="tb cal" title="Calendar" onclick="go('calendar')"><span style="width:19px;height:19px;display:block">${CALICON}</span>${badge}</button>
+      <button class="tb call" title="Contact your team" onclick="go('contacts')">${PHONE}</button>
+      <button class="tb-ai" onclick="go('ai')">${AISPK}<span>AI</span></button>
+    </div>`;
+  /* on a role/segment switch, bring the module grid into view so the
+     rebuild is actually visible rather than happening below the fold */
+  if(tileSwap){
+    requestAnimationFrame(()=>{
+      const g=screen.querySelector('#tileGrid'), bd=screen.querySelector('.body');
+      if(!g||!bd) return;
+      const dy=g.getBoundingClientRect().top-bd.getBoundingClientRect().top-96;
+      bd.scrollTo({top:Math.max(0,bd.scrollTop+dy),behavior:'smooth'});
+    });
+  }
+  tileSwap=false;
+}
+let tileSwap=false;
+
+function renderDetail(){
+  /* rebuilt on every render, so segment changes and newly-booked calendar
+     items are reflected in the open module rather than a cached string */
+  const d = state._detail = detailContent(state._detailId);
+  if(d.title==='__contacts__'){ state.screen='contacts'; return renderContacts(); }
+  let bodyHTML;
+  if(d.interactive==='navigator') bodyHTML=navigatorHTML();
+  else if(d.interactive==='loyalty') bodyHTML=loyaltyHTML();
+  else if(d.interactive==='retention') bodyHTML=retentionHTML();
+  else bodyHTML=d.html;
+  screen.innerHTML = statusBar() + `<div class="detail fade">
+      <div class="dhead"><button class="back" onclick="back()">${BACK}</button><div class="dt">${d.title}<small>${d.sub||''}</small></div></div>
+      <div class="dbody">${bodyHTML}</div>
+    </div>`;
+  if(d.interactive==='navigator') wireNavigator();
+  if(d.interactive==='loyalty') wireLoyalty();
+  wireActs();
+}
+function wireActs(){
+  screen.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>{
+    const a=b.getAttribute('data-act');
+    if(a==='pi'){ toast('Opening Directions for Use (PDF)…'); }
+    else if(a==='nav'){ openTile('anatomy'); }
+    else if(a==='train'){ openTile('mylearning'); }
+    else if(a==='team'||a==='kol'){ go('contacts'); }
+    else if(a==='cal'){ go('calendar'); }
+    else if(a==='conf'){ toast('Registration opens in the full app'); }
+  });
+  /* add-to-calendar buttons on training / event rows */
+  screen.querySelectorAll('.calbtn:not(.added)').forEach(b=>b.onclick=()=>{
+    openCalSheet(b.dataset.calT, b.dataset.calS, b.dataset.calD, b.dataset.calTm);
+  });
+  screen.querySelectorAll('.faq .q').forEach(q=>q.onclick=()=>{ const a=q.nextElementSibling; a.classList.toggle('open');
+    const s=q.querySelector('span'); if(s) s.textContent=a.classList.contains('open')?'–':'+'; });
+}
+function openTile(id){ const d=detailContent(id); if(d.title==='__contacts__'){ go('contacts'); return;} state._detailId=id; state._detail=d; go('detail'); }
+
+/* ----- AI ----- */
+let aiLog=[];
+function renderAI(){
+  if(aiLog.length===0) aiLog=[{from:'bot',text:AI_INTRO,tag:''}];
+  const log=aiLog.map(m=>`<div class="msg ${m.from==='bot'?(m.escal?'bot escal':'bot'):'me'}">${m.text}${m.tag?`<span class="tag">${m.tag}</span>`:''}</div>`).join('');
+  const chips=AI_SUGGEST.map(c=>`<button class="qchip" onclick="askAI('${c.replace(/'/g,"\\'")}')">${c}</button>`).join('');
+  screen.innerHTML = statusBar() + `<div class="ai fade">
+      <div class="ai-head"><button class="back" onclick="go('hub')">${BACK}</button>
+        <div class="orb">${AISPK}</div><div class="at"><b>ALASTIN Assistant</b><span><i></i>Approved content only</span></div></div>
+      <div class="ai-log" id="aiLog">${log}</div>
+      <div class="chips2">${chips}</div>
+      <div class="ai-input"><input id="aiIn" placeholder="Ask about protocols, pairing, Auto-Replenish…" autocomplete="off"
+        onkeydown="if(event.key==='Enter'){askAI(this.value); this.value='';}">
+        <button class="ai-send" onclick="const i=document.getElementById('aiIn'); askAI(i.value); i.value='';">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div></div>`;
+  const lg=document.getElementById('aiLog'); if(lg) lg.scrollTop=lg.scrollHeight;
+}
+function askAI(q){ q=(q||'').trim(); if(!q) return;
+  aiLog.push({from:'me',text:q}); renderAI();
+  const lg=document.getElementById('aiLog');
+  lg.insertAdjacentHTML('beforeend','<div class="msg bot" id="typing"><div class="typing"><i></i><i></i><i></i></div></div>'); lg.scrollTop=lg.scrollHeight;
+  setTimeout(()=>{ const a=aiAnswer(q); aiLog.push({from:'bot',text:a.text,tag:a.tag,escal:a.escal}); renderAI();
+    if(a.escal) setTimeout(()=>toast('Tap the call button to reach the medical team'),300); },650);
+}
+
+/* ----- contacts ----- */
+function renderContacts(){
+  const list=CONTACTS.map((c,i)=>`
+    <div class="contact"><div class="av" style="background:${c.color}">${c.init}</div>
+      <div class="ct"><b>${c.name}</b><span class="role">${c.role}</span><br><span>${c.sub}</span></div>
+      <div class="cbtns">
+        <button class="cbtn v" title="Video call" onclick="startCall(${i})"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="6" width="12" height="12" rx="2"/><path d="M15 10l6-3v10l-6-3"/></svg></button>
+        <button class="cbtn p" title="Voice call" onclick="startCall(${i})">${PHONE}</button>
+      </div></div>`).join('');
+  screen.innerHTML = statusBar() + `<div class="contacts fade">
+      <div class="dhead"><button class="back" onclick="go('hub')">${BACK}</button><div class="dt">Talk to your team<small>Routed to this territory</small></div></div>
+      <div class="cbody"><p class="cintro">Real people on the ALASTIN field team — by name and role, matched to your question. Not a 1-800 number.</p>${list}</div>
+    </div>`;
+}
+function startCall(i){
+  const c=CONTACTS[i];
+  const o=document.createElement('div'); o.className='vcall fade'; o.id='vcall';
+  o.innerHTML=`<div class="vc-top"><div class="nm">${c.name}</div><div class="st" id="vcSt">Connecting…</div></div>
+    <div class="vc-self">${ic('person')}</div>
+    <div class="vc-stage"><div class="vc-av" style="background:${c.color}">${ic('person')}</div></div>
+    <div class="vc-bar">
+      <button class="vbtn" title="Camera"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="6" width="12" height="12" rx="2"/><path d="M15 10l6-3v10l-6-3"/></svg></button>
+      <button class="vbtn" title="Mute"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></button>
+      <button class="vbtn end" title="End" onclick="endCall()"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 9c-2.4 0-4.7.4-6.8 1.1-.5.2-.9.7-.9 1.3v2.1c0 .5.4 1 .9 1.1l2.6.6c.5.1 1-.1 1.2-.6l.7-1.6c2-.6 4.2-.6 6.6 0l.7 1.6c.2.5.7.7 1.2.6l2.6-.6c.5-.1.9-.6.9-1.1v-2.1c0-.6-.4-1.1-.9-1.3C16.7 9.4 14.4 9 12 9z" transform="rotate(135 12 12)"/></svg></button>
+    </div>`;
+  document.querySelector('.screen').appendChild(o);
+  setTimeout(()=>{ const st=document.getElementById('vcSt'); if(st) st.textContent='Connected · 00:01'; startTimer(); },1400);
+}
+let timer=null,secs=1;
+function startTimer(){ secs=1; clearInterval(timer); timer=setInterval(()=>{ secs++; const st=document.getElementById('vcSt');
+  if(st){const m=String(Math.floor(secs/60)).padStart(2,'0'),s=String(secs%60).padStart(2,'0'); st.textContent=`Connected · ${m}:${s}`;} },1000); }
+function endCall(){ clearInterval(timer); const v=document.getElementById('vcall'); if(v){v.style.opacity=0; setTimeout(()=>v.remove(),200);} toast('Call ended'); }
+
+/* ----- helpers ----- */
+function go(s){ if(state.screen!=='detail'||s!=='detail') navStack.push(state.screen); state.screen=s; render(); }
+function back(){ const p=navStack.pop()||'hub'; state.screen=p; render(); }
+
+
+/* ============================================================ PROFILE
+   The practice profile is the bridge: the text half fills it, the app
+   half reads it. P is the single source of truth for both. */
+let P={}, timers=[];
+
+/* ---------- reference data ---------- */
+const PROCS=[['toxin','Neurotoxin'],['filler','Dermal filler'],['biostim','Biostimulator'],
+  ['laser','Laser resurfacing'],['ipl','IPL / BBL'],['micro','Microneedling'],['rf','RF microneedling'],
+  ['peel','Chemical peels'],['tighten','Skin tightening'],['body','Body contouring'],
+  ['facial','Facials'],['surgical','Surgical']];
+const RESURF=['laser','ipl','micro','rf','peel','tighten'];
+const INJECT=['toxin','filler','biostim'];
+const BODYP=['body','tighten','surgical'];
+const CATS=[['procedure','Procedure'],['core','Daily anti-aging'],['tone','Tone & texture'],
+  ['targeted','Targeted & body'],['spf','Sun protection']];
+const CATNAME=Object.fromEntries(CATS);
+
+const CONCERNS=[
+  {k:'postprocedure',l:'Post-procedure',need:RESURF},
+  {k:'postinjection',l:'Post-injectable',need:INJECT},
+  {k:'laxity',l:'Lines & firmness'},
+  {k:'dryness',l:'Dehydration'},
+  {k:'dullness',l:'Texture & dullness'},
+  {k:'pigment',l:'Uneven tone'},
+  {k:'environmental',l:'Sun exposure'},
+  {k:'retinize',l:'Photoaging'},
+  {k:'eyes',l:'Eye area'},
+  {k:'neck',l:'Neck & décolleté'},
+  {k:'body',l:'Body',need:BODYP},
+  {k:'surgery',l:'Post-surgical',need:['surgical']},
+  {k:'spf',l:'Daily protection'},
+];
+const MODULES=[
+  {n:'Procedure Enhancement Protocol',need:RESURF},
+  {n:'Injectable Pairing Protocol',need:INJECT},
+  {n:'Core Regimen Foundations',always:true},
+  {n:'Tone & Texture Protocol',cat:'tone'},
+  {n:'Body Protocols',need:BODYP,cat:'targeted'},
+  {n:'Daily Defense Protocol',always:true},
+  {n:'Retinol Onboarding',always:true},
+  {n:'Targeted Area Protocols',cat:'targeted'},
+];
+const GENERIC_TILES=['Product Portfolio','Online Training','Studies & Evidence','FAQs','Events & Symposia','Prepare for Consults'];
+
+/* ---------- profile model ---------- */
+function freshProfile(){
+  return {specialty:'Dermatology', locations:2, hours:'Mon–Fri · 8–5', ehr:'Nextech',
+          offered:null, cadence:null,
+          stocked:['procedure','core','spf'], addNext:null,
+          injectors:2, aestheticians:null, checkout:null,
+          monthly:180, postShare:null,
+          payMethod:false, payRecipient:false};
+}
+const SECTIONS=[
+  {id:'details', short:'Practice details',    icon:'building', name:'Practice details',      sub:'Specialty, locations, hours, EHR',        fields:['specialty','locations','hours','ehr']},
+  {id:'procedures', short:'Procedures', icon:'wand',     name:'Procedures you perform',sub:'Drives every protocol we send you',        fields:['offered','cadence']},
+  {id:'categories', short:'Categories', icon:'shelf',    name:'Categories you stock',  sub:'The shelf today, and what comes next',     fields:['stocked','addNext']},
+  {id:'team', short:'Team',       icon:'team',     name:'Team & dispensing',     sub:'Who treats, who hands over at checkout',   fields:['injectors','aestheticians','checkout']},
+  {id:'volume', short:'Patient volume',     icon:'chart',    name:'Patient volume',        sub:'Monthly patients and post-procedure mix',  fields:['monthly','postShare']},
+  {id:'payout', short:'Payout',     icon:'wallet',   name:'Payout & commission',   sub:'Confirm before August can release',        fields:['payMethod','payRecipient'], payoutOnly:true},
+];
+function sections(){ return SECTIONS.filter(s=>!s.payoutOnly || state.trig==='payout'); }
+function filled(k){
+  /* if she stocks everything, "open next" has no answer to give */
+  if(k==='addNext' && (P.stocked||[]).length===CATS.length) return true;
+  const v=P[k];
+  if(typeof v==='boolean') return v;
+  if(Array.isArray(v)) return v.length>0;
+  return v!==null && v!==undefined && v!=='';
+}
+function allFields(){ return sections().flatMap(s=>s.fields); }
+function pct(){ const f=allFields(); return Math.round(f.filter(filled).length/f.length*100); }
+function secDone(s){ return s.fields.every(filled); }
+/* the sections this trigger's text actually asked for */
+function requiredSecs(){ return sections().filter(x=>TRIG().flag.includes(x.id)); }
+function requiredDone(){ return requiredSecs().every(secDone); }
+function nextRequired(){ return requiredSecs().find(x=>!secDone(x))||null; }
+const UNLOCKS={
+  details:'routing and scheduling around your real hours',
+  procedures:'protocol matching and the concern list',
+  categories:'merchandising support and which categories the app surfaces',
+  team:'training routed to whoever actually does the handover',
+  volume:'benchmarks and the growth model',
+  payout:'commission release',
+};
+function secStarted(s){ return s.fields.some(filled); }
+
+/* ---------- triggers: each is a small branching SMS flow ----------
+   Every node offers numbered quick replies. The practitioner can tap a
+   number, type a number, type words we recognise, or type anything at
+   all — the fallback re-offers the same options and hands the message
+   to a person rather than dead-ending. STOP / START / HELP behave the
+   way a real SMS programme has to. */
+const TRIGGERS={
+  gap:{
+    why:'Generic protocols keep going out because the profile never said what she performs.',
+    flag:['procedures','team','volume'],
+    flagWord:'Needed for protocol routing',
+    linkTitle:'Complete your practice profile',
+    linkSub:'Opens straight to what is missing. No login.',
+    hubNote:'Because the profile now says what she performs, the app can stop guessing.',
+    hubNotePartial:'The app can stop guessing about what she performs. The sections she skipped are still guesswork.',
+    owner:'Sarah Lin', deep:null, clock:[9,12], start:'s0',
+    nodes:{
+      s0:{in:[`Dr. Voss — your ALASTIN practice profile is {PCT}% complete. We're sending you generic protocols because we don't know what you actually perform.`,
+              `Reply <b>1</b> for the secure link, <b>2</b> to see what's missing, or <b>3</b> to have your consultant call you.`],
+          opts:[{n:1,label:'Send me the link',go:'link',kw:['link','send','yes','ok','sure','do it','now']},
+                {n:2,label:"What's missing?",go:'missing',kw:['missing','what','which','need','why']},
+                {n:3,label:'Have someone call me',go:'call',kw:['call','phone','talk','speak','sarah']}]},
+      missing:{in:[`Three things: the procedures you run, who hands product over at checkout, and your post-procedure patient mix. Everything else we already have.`,
+                   `Reply <b>1</b> and I'll send the link, or <b>3</b> if you'd rather talk to Sarah.`],
+          opts:[{n:1,label:'Send me the link',go:'link',kw:['link','send','yes','ok','fine']},
+                {n:3,label:'Have someone call me',go:'call',kw:['call','phone','talk','speak']}]},
+      call:{in:[`Sarah Lin, your practice consultant, will call you this afternoon.`,
+                `If you'd rather not wait, the link is here — it takes about two minutes.`], link:true, opts:[]},
+      link:{in:[`Here you go. The link expires in 24 hours.`], link:true, opts:[]},
+    }},
+  payout:{
+    why:'A released payout is the strongest reason anyone has ever had to finish a form.',
+    flag:['payout','details'],
+    flagWord:'Required to release August',
+    linkTitle:'Confirm your payout details',
+    linkSub:'Opens to the payout section. Releases same day.',
+    hubNote:'Payout confirmed, and the rest of the profile came along with it.',
+    hubNotePartial:'Payout confirmed in two taps. The rest of the profile is still blank, so most of the app is unchanged — which is exactly what the screen below shows.',
+    owner:'James Carter', deep:'payout', clock:[8,47], start:'s0',
+    nodes:{
+      s0:{in:[`Dr. Voss — your August practice share of $4,180 is calculated and ready, but it's on hold. Two confirmations are outstanding.`,
+              `Reply <b>1</b> to confirm now, <b>2</b> to see which confirmations, or <b>3</b> to speak to someone.`],
+          opts:[{n:1,label:'Confirm now',go:'link',kw:['confirm','yes','link','send','now','ok','release']},
+                {n:2,label:'Which confirmations?',go:'which',kw:['which','what','why','missing','detail']},
+                {n:3,label:'Speak to someone',go:'call',kw:['call','phone','talk','speak','james','person','human']}]},
+      which:{in:[`Your payout method and the commission recipient for the practice. Neither asks you to enter anything new — you're confirming what's already on file.`,
+                 `Your profile is also only {PCT}% complete, so we've put the rest in the same place. Reply <b>1</b> for the link, or <b>3</b> to talk to James.`],
+          opts:[{n:1,label:'Send me the link',go:'link',kw:['link','send','yes','ok','confirm']},
+                {n:3,label:'Speak to someone',go:'call',kw:['call','phone','talk','speak','human']}]},
+      call:{in:[`James Carter handles practice payouts for your region. He'll call you before end of day.`,
+                `The link is here too, if you'd rather just confirm it yourself.`], link:true, opts:[]},
+      link:{in:[`Sent. Confirm both and August releases in tonight's run.`], link:true, opts:[]},
+    }},
+  launch:{
+    why:'Scarcity plus a deadline. Allocation is the carrot, the profile is the price.',
+    flag:['procedures','categories'],
+    flagWord:'Needed for allocation',
+    linkTitle:'Confirm your mix for allocation',
+    linkSub:'Two minutes. Allocation closes Friday.',
+    hubNote:'Allocation is set, and the app now knows which categories to merchandise to her.',
+    hubNotePartial:'Allocation is set, and the app now knows what she performs and stocks. The sections she skipped are still blank.',
+    owner:'Sarah Lin', deep:'procedures', clock:[11,4], start:'s0',
+    nodes:{
+      s0:{in:[`Dr. Voss — the new procedure protocol lands Sep 15 and sample allocation goes by practice profile. Yours is {PCT}% complete.`,
+              `Reply <b>1</b> to be counted in, <b>2</b> to see what we need, or <b>3</b> if you'd rather sit this one out.`],
+          opts:[{n:1,label:'Count me in',go:'link',kw:['in','yes','count','link','send','ok','sure','want']},
+                {n:2,label:'What do you need?',go:'need',kw:['what','need','which','why','how']},
+                {n:3,label:'Sit this one out',go:'no',kw:['no','not interested','pass','skip','out','later']}]},
+      need:{in:[`The procedures you run and the categories you stock. That's it — it decides which protocol and which samples you get.`,
+                `Reply <b>1</b> and you're in the first allocation, or <b>3</b> to sit it out.`],
+          opts:[{n:1,label:'Count me in',go:'link',kw:['in','yes','link','send','ok','count']},
+                {n:3,label:'Sit this one out',go:'no',kw:['no','pass','skip','out','not']}]},
+      no:{in:[`Understood. You'll stay on the standard allocation and I won't chase you about it.`,
+              `If you change your mind, reply <b>1</b> any time before Friday at 5.`],
+          fallback:`Noted — nothing more needed from you on this one. Reply <b>1</b> before Friday if that changes.`,
+          opts:[{n:1,label:'Actually, count me in',go:'link',kw:['in','yes','changed','count','link','ok']}]},
+      link:{in:[`You're in. Allocation closes Friday at 5.`], link:true, opts:[]},
+    }},
+};
+function TRIG(){ return TRIGGERS[state.trig]; }
+function isFlagged(id){ return TRIG().flag.includes(id) && !secDone(SECTIONS.find(s=>s.id===id)); }
+
+/* ---------- derived: what the profile changes ---------- */
+function matchedConcerns(){
+  const o=P.offered||[];
+  return CONCERNS.filter(c=>!c.need || c.need.some(n=>o.includes(n)));
+}
+function orderedModules(){
+  const o=P.offered||[], st=(P.stocked||[]).concat(P.addNext||[]);
+  /* if a module names procedures, those procedures decide it — a stocked category
+     alone must not queue training for a procedure she just told us she doesn't do */
+  const hit=m=> m.need ? m.need.some(n=>o.includes(n)) : (m.cat ? st.includes(m.cat) : false);
+  const on=MODULES.filter(m=>hit(m)), off=MODULES.filter(m=>!hit(m)&&!m.always), always=MODULES.filter(m=>m.always&&!hit(m));
+  return {on:on.concat(always), off};
+}
+/* ---------- the bridge: profile → module grid ----------
+   Scores the same 16 tile ids the hub uses. The hub blends this with the
+   lens × stage set (profile first, lens second), so the grid "What changed"
+   previews is literally the grid Practice 360° opens on. */
+function profileScores(){
+  const o=P.offered||[], st=(P.stocked||[]).concat(P.addNext||[]);
+  const any=a=>a.some(x=>o.includes(x));
+  const S={}, R=[], add=(t,w)=>S[t]=(S[t]||0)+w, why=(txt,w)=>R.push([txt,w]);
+  add('anatomy',130);
+  if(any(RESURF)){ add('prepare',70); why('resurfacing on file',70); }
+  if(any(INJECT)){ add('toparticles',56); add('prepare',24); why('injectables on file',56); }
+  if(any(BODYP)){  add('centers',62); add('brands',34); why('body work on file',62); }
+  if(o.includes('facial')) add('inclinic',38);
+  if((P.addNext||[]).length){ add('brands',76); why('opening '+P.addNext.map(c=>CATNAME[c].toLowerCase()).join(' and '),76); }
+  if(st.includes('tone')||st.includes('targeted')) add('articles',36);
+  if(P.checkout==='desk'||P.checkout==='nobody'){ add('inclinic',82); why(P.checkout==='desk'?'front desk handles checkout':'nobody owns the checkout handover',82); }
+  if(P.checkout==='aesthetician'){ add('inclinic',46); why('aestheticians hand product over',46); }
+  if(P.postShare==='most'){ add('prepare',52); why('most patients seen post-procedure',52); }
+  if(P.postShare==='third'){ add('grow',46); why('few patients seen post-procedure',46); }
+  if(P.monthly>=300){ add('grow',50); why('high patient volume',50); }
+  if(P.cadence==='rarely'){ add('online',48); why('resurfacing is occasional',48); }
+  if(P.cadence==='weekly'){ add('conferences',36); }
+  if(state.trig==='payout' && P.payMethod && P.payRecipient){ add('affiliate',90); why('payout confirmed',90); }
+  /* tie-breakers so the grid is always full */
+  add('grow',20); add('online',11); add('articles',8); add('conferences',5); add('faqs',3); add('mylearning',2);
+  R.sort((x,y)=>y[1]-x[1]);
+  return {S, reasons:R.map(x=>x[0])};
+}
+function hubTiles(applied){
+  const set=tileSetFor(state.role,state.seg);
+  if(!applied) return set;
+  const {S,reasons}=profileScores();
+  /* the lens × stage set orders the tail: 48 → 6 points, well under any profile signal */
+  set.tiles.slice(0,8).forEach((id,i)=>S[id]=(S[id]||0)+(8-i)*6);
+  const ranked=Object.entries(S).filter(([id])=>id!=='safety').sort((x,y)=>y[1]-x[1]||x[0].localeCompare(y[0])).map(x=>x[0]);
+  const tiles=ranked.slice(0,8).concat('safety');
+  const lead=tiles.slice(0,2).map(id=>TILES_BASE[id]).join(' and ');
+  const why = reasons.length
+    ? `Built from the profile: ${reasons.slice(0,3).join(', ')}. ${lead} lead.`
+    : `Built from the profile, but it does not say what she performs yet, so the grid follows the ${SEG[state.seg].name.split(' · ')[0]} stage.`;
+  return {tiles, star:tiles[0], why};
+}
+/* the six tiles "What changed" and the handoff preview */
+function afterTiles(){ return hubTiles(true).tiles.slice(0,6).map(id=>TILES_BASE[id]); }
+
+/* ---------- the bridge: profile → modules that read it ---------- */
+function stockedCount(){ return (P.stocked||[]).length; }
+function openShelf(){ return CATS.filter(c=>!(P.stocked||[]).includes(c[0])).map(c=>c[1].toLowerCase()); }
+function joinAnd(a){ return a.length<=1 ? a.join('') : a.slice(0,-1).join(', ')+' and '+a[a.length-1]; }
+function cap(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+function shelfCallout(){
+  const open=openShelf(), n=stockedCount();
+  if(!open.length) return `<div class="callout">This practice stocks all ${CATS.length} categories — the conversation moves to depth per category and Auto-Replenish.</div>`;
+  return `<div class="callout">This practice stocks ${n} of ${CATS.length} categories — ${open.map(x=>'<b>'+x+'</b>').join(open.length===2?' and ':', ')} ${open.length===1?'is':'are'} the open shelf.${(P.addNext||[]).length?` She has flagged ${joinAnd(P.addNext.map(c=>CATNAME[c].toLowerCase()))} as next.`:''}</div>`;
+}
+function shelfSentence(){
+  const open=openShelf(), n=stockedCount(), have=joinAnd((P.stocked||[]).map(c=>CATNAME[c].toLowerCase()));
+  if(!open.length) return `She stocks all ${CATS.length} categories: ${have}. The next lever is depth per category and Auto-Replenish enrollment, not breadth.`;
+  return `She stocks ${n} of ${CATS.length} categories: ${have}. ${cap(joinAnd(open))} ${open.length===1?'is':'are'} the open shelf${(P.addNext||[]).length?`, and she has flagged ${joinAnd(P.addNext.map(c=>CATNAME[c].toLowerCase()))} as next`:''} — the targeted and body range carries the largest basket size in the line.`;
+}
+const MODULE_SLOT={
+  'Procedure Enhancement Protocol':['2026-09-04','4:00 PM','2 of 4 sessions · resume'],
+  'Core Regimen Foundations':['2026-09-08','4:00 PM','Advanced · unlocks the daily-routine conversation'],
+  'Body Protocols':['2026-09-29','1:00 PM','TransFORM & ReFORM sequencing'],
+  'Injectable Pairing Protocol':['2026-09-11','4:00 PM','INhance · chair-side handoff'],
+  'Tone & Texture Protocol':['2026-09-18','1:00 PM','A-LUMINATE & ReSURFACE framing'],
+  'Daily Defense Protocol':['2026-09-22','4:00 PM','Antioxidant · SPF sequencing'],
+  'Retinol Onboarding':['2026-09-25','4:00 PM','Tolerance-first onboarding'],
+  'Targeted Area Protocols':['2026-10-02','1:00 PM','Eye · neck · below the jawline'],
+};
+function courseworkHTML(){
+  const derived = state.profileApplied && ((P.offered||[]).length>0 || (P.addNext||[]).length>0 || (P.stocked||[]).length>3);
+  if(!derived) return `
+      <div class="course"><div class="cic done">✓</div><div class="cm"><h4>Injectable Pairing Protocol</h4><p>INhance · chair-side handoff</p></div><div class="ctag">Done</div></div>
+      <div class="course"><div class="cic done">✓</div><div class="cm"><h4>Daily Defense Protocol</h4><p>Antioxidant · SPF sequencing</p></div><div class="ctag">Done</div></div>
+      <div class="course"><div class="cic prog">●</div><div class="cm"><h4>Procedure Enhancement Protocol</h4><p>2 of 4 sessions · in progress</p></div>${calBtn('Procedure Enhancement Protocol · session 3','Online module','2026-09-04','4:00 PM')}</div>
+      <div class="course"><div class="cic todo">+</div><div class="cm"><h4>Core Regimen Foundations</h4><p>Advanced · unlocks the daily-routine conversation</p></div>${calBtn('Core Regimen Foundations','Online · advanced module','2026-09-08','4:00 PM')}</div>`;
+  const om=orderedModules();
+  const row=(m,i,on)=>{ const s=MODULE_SLOT[m.n]||['2026-10-06','4:00 PM','Online module'];
+    return `<div class="course${on?'':' dim'}"><div class="cic ${on?(i===0?'prog':'todo'):'off'}">${on?(i===0?'●':'+'):'·'}</div>
+      <div class="cm"><h4>${m.n}</h4><p>${on?(i===0?'Next up · ':'')+s[2]:'Not your mix'}</p></div>
+      ${on?calBtn(m.n,'Online · '+s[2],s[0],s[1]):'<div class="ctag">Later</div>'}</div>`; };
+  return `<div class="callout plum" style="margin-top:0">Ordered by the procedures and categories on her profile. Your mix first, the rest queued.</div>`
+    + om.on.map((m,i)=>row(m,i,true)).join('') + om.off.map((m,i)=>row(m,i,false)).join('');
+}
+function payoutReleasedHTML(){
+  if(!(state.trig==='payout' && state.profileApplied && P.payMethod && P.payRecipient)) return '';
+  return `<div class="unlock" style="margin:4px 0 14px"><div class="ul">Released tonight</div><div class="amt">$4,180</div>
+    <div class="us">August practice share. Confirmed from your text this morning, so it goes out in tonight&rsquo;s run.</div></div>`;
+}
+
+/* ============================================================ PROFILE SCREENS */
+function brandBar(extra){
+  return `<div class="appbar"><div class="brand"><div class="wordmark">Alastin</div><div class="tag">Practice 360° · Profile</div></div>
+    ${extra||''}</div>`;
+}
+function ringSVG(p){
+  const C=207.3, off=(C*(1-p/100)).toFixed(1);
+  return `<div class="pr"><svg width="74" height="74" viewBox="0 0 74 74" style="transform:rotate(-90deg)">
+    <circle cx="37" cy="37" r="33" fill="none" stroke="#E3E0E5" stroke-width="7"/>
+    <circle cx="37" cy="37" r="33" fill="none" stroke="${p>=100?'#4C6B58':'#3C2F55'}" stroke-width="7" stroke-linecap="round"
+      stroke-dasharray="${C}" stroke-dashoffset="${off}" style="transition:stroke-dashoffset .6s cubic-bezier(.22,1,.36,1)"/>
+  </svg><span class="pv2">${p}%</span></div>`;
+}
+
+/* ---------- 1. messages ---------- */
+let mlog=[];              /* the thread, as data — so a re-render never loses it */
+let clockMin=0;
+function clearTimers(){ timers.forEach(clearTimeout); timers=[]; }
+function stamp(){
+  const c=TRIG().clock; let t=c[0]*60+c[1]+clockMin; clockMin+=1;
+  const h=Math.floor(t/60)%24, m=t%60, ap=h<12?'AM':'PM', hh=(h%12)||12;
+  return `${hh}:${String(m).padStart(2,'0')} ${ap}`;
+}
+function addLog(e){ mlog.push(e); paintThread(); }
+function dropTyping(){ mlog=mlog.filter(e=>e.k!=='typing'); }
+function paintThread(){
+  const th=document.getElementById('thread'); if(!th) return;
+  th.innerHTML='<div class="tday">Today</div>'+mlog.map(e=>{
+    if(e.k==='typing') return '<div class="typing3"><i></i><i></i><i></i></div>';
+    if(e.k==='link')   return linkHTML();
+    if(e.k==='sys')    return `<div class="bub sys">${e.x}</div>`;
+    return `<div class="bub ${e.k}">${e.x}<span class="bt">${e.tm}</span></div>`;
+  }).join('');
+  th.scrollTop=th.scrollHeight;
+}
+function linkHTML(){
+  const T=TRIG();
+  return `<div class="linkcard" onclick="openProfile()">
+      <div class="lc-top"><div class="wm">Alastin</div><div class="lu">secure.alastin-practice.com/profile · expires in 24h</div></div>
+      <div class="lc-b"><b>${T.linkTitle}</b><span>${T.linkSub}</span>
+        <div class="lc-go">Open <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${SVG.arrow}</svg></div>
+      </div></div>`;
+}
+function renderMessages(){
+  screen.innerHTML=statusBar()+`
+    <div class="msghead"><div class="mav">AL</div>
+      <div class="mm"><b>ALASTIN</b><span>Practice messages · verified sender</span></div>
+      <span class="mx">SMS</span></div>
+    <div class="thread" id="thread"></div>
+    <div class="composer" id="composer"></div>`;
+  paintThread();
+  if(!mlog.length) playNode(TRIG().start,true); else drawComposer();
+}
+
+/* play one node: typing indicator, each inbound line, then the link card */
+function playNode(id,initial){
+  const node=TRIG().nodes[id]; if(!node) return;
+  state.node=id; state.playing=true; drawComposer();
+  let d=initial?300:380;
+  node.in.forEach(txt=>{
+    timers.push(setTimeout(()=>addLog({k:'typing'}), d)); d+=640;
+    timers.push(setTimeout(()=>{ dropTyping(); addLog({k:'in',x:txt.replace('{PCT}',pct()),tm:stamp()}); }, d)); d+=430;
+  });
+  if(node.link){ timers.push(setTimeout(()=>addLog({k:'link'}), d)); d+=260; }
+  timers.push(setTimeout(()=>{ state.playing=false; drawComposer(); }, d));
+}
+
+/* ---- composer: numbered quick replies + free text ---- */
+function drawComposer(){
+  const c=document.getElementById('composer'); if(!c) return;
+  const node=TRIG().nodes[state.node]||{opts:[]};
+  const opts=state.playing?[]:(node.opts||[]);
+  const chips=state.optedOut
+    ? `<button class="qr" onclick="sendReply('START')"><b>&#8631;</b>Reply START to resume</button>`
+    : opts.map(o=>`<button class="qr" onclick="sendReply('${o.n}')"><b>${o.n}</b>${o.label}</button>`).join('');
+  const hint = state.optedOut ? 'Opted out · no further messages'
+    : state.playing ? 'ALASTIN is typing…'
+    : opts.length ? 'Tap a number, or type your own reply'
+    : 'Thread complete · tap the card above, or reply STOP / HELP';
+  c.innerHTML=`
+    <div class="cutil"><span class="chint">${hint}</span>
+      <button class="cu" onclick="replayThread()">&#8634; Replay</button>
+      <button class="cu" onclick="skipThread()">Skip to link</button></div>
+    ${chips?`<div class="qreplies">${chips}</div>`:''}
+    <div class="cinput">
+      <input id="smsIn" placeholder="Type a reply…" autocomplete="off" ${state.playing?'disabled':''}
+        onkeydown="if(event.key==='Enter'){sendReply(this.value); this.value='';}">
+      <button aria-label="Send" onclick="const i=document.getElementById('smsIn'); sendReply(i.value); i.value='';">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button></div>`;
+}
+
+/* ---- what the practitioner tapped or typed ---- */
+function sendReply(raw){
+  const txt=(raw||'').trim(); if(!txt || state.playing) return;
+  clearTimers(); dropTyping();
+  addLog({k:'out',x:escHTML(txt),tm:stamp()});
+  const t=txt.toLowerCase().replace(/[^a-z0-9 ]/g,'').trim();
+  const node=TRIG().nodes[state.node]||{opts:[]};
+
+  if(t==='stop'||t==='unsubscribe'||t==='quit'){
+    state.optedOut=true; state.playing=true; drawComposer();
+    timers.push(setTimeout(()=>{ addLog({k:'sys',x:'You are unsubscribed from ALASTIN practice messages. Reply START to resume.'});
+      state.playing=false; drawComposer(); },460));
+    return;
+  }
+  if(t==='start'){
+    state.optedOut=false;
+    timers.push(setTimeout(()=>{ addLog({k:'sys',x:'Resubscribed. Picking up where we left off.'}); playNode(state.node); },460));
+    state.playing=true; drawComposer(); return;
+  }
+  if(state.optedOut){ state.playing=false; drawComposer(); return; }
+  if(t==='help'||t==='info'){
+    state.playing=true; drawComposer();
+    timers.push(setTimeout(()=>{ addLog({k:'sys',x:'ALASTIN practice messages · msg &amp; data rates may apply · reply STOP to opt out · for anything urgent call your consultant.'}); },460));
+    timers.push(setTimeout(()=>playNode(state.node),1000));
+    return;
+  }
+  /* a number they tapped or typed */
+  const num=t.match(/^([1-9])\b/);
+  if(num){ const o=(node.opts||[]).find(o=>String(o.n)===num[1]); if(o){ playNode(o.go); return; } }
+  /* words we recognise */
+  const kw=(node.opts||[]).find(o=>(o.kw||[]).some(k=>t.includes(k)));
+  if(kw){ playNode(kw.go); return; }
+  /* anything else — hand it to a person and re-offer rather than dead-end */
+  state.playing=true; drawComposer();
+  timers.push(setTimeout(()=>addLog({k:'typing'}),380));
+  timers.push(setTimeout(()=>{ dropTyping(); addLog({k:'in',x:offerAgain(node),tm:stamp()});
+    state.playing=false; drawComposer(); },1050));
+}
+function offerAgain(node){
+  const who=TRIG().owner;
+  if(node.fallback) return node.fallback;
+  if(!node.opts||!node.opts.length) return `I've passed that to ${who}, who picks it up from here. The link above is still live.`;
+  const list=node.opts.map(o=>`<b>${o.n}</b> ${o.label.toLowerCase()}`).join(' · ');
+  return `I didn't catch that, and I'd rather hand you to a person than guess — ${who} has your message. In the meantime: ${list}.`;
+}
+function escHTML(x){ return x.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function replayThread(){
+  clearTimers(); mlog=[]; clockMin=0; P=freshProfile();
+  Object.assign(state,{optedOut:false,node:TRIG().start,sec:null,guided:false,leftDeep:false,landedOn:null});
+  renderMessages();
+}
+function skipThread(){
+  clearTimers(); mlog=[]; clockMin=0; P=freshProfile();
+  Object.assign(state,{optedOut:false,sec:null,guided:false,leftDeep:false,landedOn:null});
+  const T=TRIG(), s0=T.nodes[T.start], ln=T.nodes.link;
+  s0.in.forEach(x=>mlog.push({k:'in',x:x.replace('{PCT}',pct()),tm:stamp()}));
+  mlog.push({k:'out',x:'1',tm:stamp()});
+  ln.in.forEach(x=>mlog.push({k:'in',x:x.replace('{PCT}',pct()),tm:stamp()}));
+  mlog.push({k:'link'});
+  state.node='link'; state.playing=false; paintThread(); drawComposer();
+}
+/* the text said where it would take her, so the link honours it */
+function openProfile(){
+  clearTimers();
+  const deep=TRIG().deep, target=sections().find(x=>x.id===deep);
+  const land = (target && !secDone(target)) ? target : (deep ? nextRequired() : null);
+  if(land){ state.sec=land.id; state.landedOn=land.id; state.guided=true; state.screen='section'; }
+  else { state.guided=false; state.screen='profile'; }
+  render();
+}
+
+/* ---------- 2. profile hub ---------- */
+function renderProfile(){
+  const T=TRIG(), p=pct(), done=p===100, reqOK=requiredDone();
+  const rows=sections().map(s=>{
+    const d=secDone(s), need=isFlagged(s.id);
+    const st=d?'Complete':(need?'Needed':(secStarted(s)?'Partial':'Add'));
+    return `<button class="secrow ${d?'done':(need?'need':'')}" onclick="openSec('${s.id}')">
+      <span class="sic">${d?ic('check'):ic(s.icon)}</span>
+      <span class="sm"><b>${s.name}</b><span>${s.sub}</span></span>
+      <span class="sst">${st}</span></button>`;
+  }).join('');
+  screen.innerHTML=statusBar()+brandBar(`<div class="appbar-row"><span class="prov-pill">Dr. Elena Voss</span>
+      <div style="display:flex;gap:8px">
+        <button class="icon-btn p360" title="Open Practice 360°" onclick="goToApp()">${ic('grid')}<span>360°</span></button>
+        <button class="icon-btn" title="Text size" onclick="toggleFont()">${TT}</button>
+      </div></div>`)+`
+    <div class="body fade"><div class="pwrap">
+      <div class="pring">${ringSVG(p)}
+        <div class="pmeta"><b>Practice profile</b>
+          <p>Radiance Dermatology &amp; Aesthetics · Bellevue, WA</p>
+          <span class="needbadge ${reqOK?'ok':''}">${done?'Profile complete':(reqOK?'Everything the text asked for':T.flagWord)}</span>
+        </div>
+      </div>
+      <div class="pbar"><i style="width:${p}%"></i></div>
+      <div class="seclist">${rows}</div>
+      <div class="src">Nothing here collects payment, banking, or identity information. Sample data throughout.</div>
+    </div></div>
+    <div class="savebar"><span class="sc">${state.fromApp
+        ? (done?'Everything is on file. Saving re-derives the app.':`${p}% overall. Saving applies whatever is filled to the app.`)
+        : (done?'Everything we need is on file.':(reqOK?`The rest is optional — it just makes the app sharper. ${p}% overall.`:'Fill the flagged sections first — the rest can wait.'))}</span>
+      ${state.fromApp
+        ? `<button onclick="finishProfile()">See what changed</button>`
+        : `<button ${reqOK?'':'disabled'} onclick="finishProfile()">See what changed</button>`}</div>`;
+}
+function openSec(id){ state.sec=id; state.screen='section'; render(); }
+
+/* ---------- 3. section forms ---------- */
+function mchips(key,opts,single){
+  const cur=P[key];
+  return `<div class="mchips" data-multi="${key}" data-single="${single?1:0}">`+opts.map(([k,l])=>{
+    const on = single ? cur===k : (cur||[]).includes(k);
+    return `<button class="mchip" data-v="${k}" aria-pressed="${on}">${l}</button>`;
+  }).join('')+`</div>`;
+}
+function stepper(key,label,min,max){
+  const v=P[key];
+  return `<div class="stepper" data-step="${key}" data-min="${min}" data-max="${max}">
+    <span class="sl">${label}</span>
+    <button data-d="-1" aria-label="Decrease">&minus;</button>
+    <span class="sv ${v===null?'unset':''}">${v===null?'—':v}</span>
+    <button data-d="1" aria-label="Increase">+</button></div>`;
+}
+function toggleRow(key,title,sub){
+  return `<div class="confirmrow"><div class="cr"><b>${title}</b><span>${sub}</span></div>
+    <button class="sw" data-sw="${key}" aria-pressed="${P[key]?'true':'false'}" aria-label="Confirm ${title}"></button></div>`;
+}
+function sectionBody(id){
+  switch(id){
+    case 'details': return `<p>This is what we already hold. Correct anything that has moved on.</p>
+      <div class="flab">Specialty</div>${mchips('specialty',[['Dermatology','Dermatology'],['Plastic surgery','Plastic surgery'],['Med spa','Med spa'],['Facial plastics','Facial plastics']],true)}
+      <div class="flab">Locations</div>${stepper('locations','Practice locations',1,9)}
+      <div class="flab">Hours</div>${mchips('hours',[['Mon–Fri · 8–5','Mon–Fri · 8–5'],['Mon–Sat · 9–6','Mon–Sat · 9–6'],['By appointment','By appointment']],true)}
+      <div class="flab">Practice system</div>${mchips('ehr',[['Nextech','Nextech'],['Aesthetic Record','Aesthetic Record'],['Modernizing Medicine','ModMed'],['Other','Other']],true)}
+      <div class="src">Used to route the right materials and to schedule around your hours.</div>`;
+    case 'procedures': return `<p>This is the one that changes everything downstream. Protocols, concern lists and training all key off what you actually perform.</p>
+      <div class="flab">Procedures you perform</div>${mchips('offered',PROCS)}
+      <div class="flab">How often you run resurfacing</div>${mchips('cadence',[['weekly','Weekly'],['monthly','Monthly'],['rarely','Occasionally']],true)}
+      <div class="src">Select everything the practice offers, not only what you personally do.</div>`;
+    case 'categories': return `<p>What is on the shelf now, and what you would open next if the support was there.</p>
+      <div class="flab">Stocked today</div>${mchips('stocked',CATS)}
+      <div class="flab">Open next</div>${
+        CATS.filter(c=>!(P.stocked||[]).includes(c[0])).length
+          ? mchips('addNext',CATS.filter(c=>!(P.stocked||[]).includes(c[0])))
+          : `<p style="margin:0">You already stock every category — nothing left to open.</p>`}
+      <div class="src">&ldquo;Open next&rdquo; drives merchandising support and which categories the app surfaces to you.</div>`;
+    case 'team': return `<p>Who treats, and who has the product conversation at checkout. The second one predicts attach rate better than the first.</p>
+      <div class="flab">Team</div>${stepper('injectors','Injectors',0,20)}
+      <div style="height:9px"></div>${stepper('aestheticians','Aestheticians',0,20)}
+      <div class="flab">Who hands product over at checkout</div>${mchips('checkout',[['provider','The provider'],['aesthetician','Aesthetician'],['desk','Front desk'],['nobody','Nobody yet']],true)}
+      <div class="src">If the answer is &ldquo;nobody yet&rdquo;, that is the single highest-value thing we can fix together.</div>`;
+    case 'volume': return `<p>Rough numbers are fine. This sizes the opportunity and sets the benchmarks you get compared against.</p>
+      <div class="flab">Aesthetic patients per month</div>${stepper('monthly','Patients / month',20,600)}
+      <div class="flab">Share seen post-procedure</div>${mchips('postShare',[['third','Under a third'],['half','About half'],['most','Most of them']],true)}
+      <div class="src">Stepper moves in 20s. Directional is enough.</div>`;
+    case 'payout': return `<p>Confirm the details we already hold. We are not asking you to enter anything new.</p>
+      ${toggleRow('payMethod','Payout method','Direct deposit on file · no changes requested')}
+      ${toggleRow('payRecipient','Commission recipient','Radiance Dermatology &amp; Aesthetics, the practice entity')}
+      <div class="callout"><b>$4,180</b> is calculated and waiting. Both confirmations release it in tonight&rsquo;s run.</div>
+      <div class="bullet"><span class="b"></span><div>This prototype collects no account numbers, routing details, or identity documents &mdash; only a confirmation that what is already on file is still correct.</div></div>
+      <div class="src">Illustrative. Real payout confirmation would run through your finance portal, not a text link.</div>`;
+  }
+}
+function renderSection(){
+  const s=SECTIONS.find(x=>x.id===state.sec), p=pct(), d=secDone(s);
+  const arrived = state.guided && !state.leftDeep && state.sec===state.landedOn;
+  const banner = arrived ? `<div class="arrived">
+      <span class="ai2">${ic('link2')}</span>
+      <div><b>Straight from your text</b><span>${TRIG().linkSub.replace(/\.$/,'')} — this is the section it needed.</span></div>
+      <button class="av2" onclick="viewFullProfile()">Full profile</button></div>` : '';
+  const nxt = d ? nextRequired() : null;
+  let cta, hint;
+  if(!d){ cta={label:'Back',act:'backToProfile()'}; hint='Unanswered items stay flagged on the profile.'; }
+  else if(nxt){ cta={label:'Next: '+shortName(nxt),act:`openSec('${nxt.id}')`}; hint=`Done. One more the text asked for.`; }
+  else if(requiredDone()){ cta={label:'See what changed',act:'finishProfile()'}; hint=pct()===100?'Everything we need is on file.':`Everything the text asked for is done. ${pct()}% overall.`; }
+  else { cta={label:'Done',act:'backToProfile()'}; hint='This section is done.'; }
+  screen.innerHTML=statusBar()+`<div class="detail fade">
+      <div class="dhead"><button class="back" onclick="backToProfile()">${BACK}</button>
+        <div class="dt">${s.name}<small>${p}% complete · ${s.fields.filter(filled).length} of ${s.fields.length} on this page</small></div></div>
+      <div class="dbody">${banner}${sectionBody(s.id)}</div>
+    </div>
+    <div class="savebar"><span class="sc">${hint}</span>
+      <button onclick="${cta.act}">${cta.label}</button></div>`;
+  wireSection();
+}
+function shortName(x){ return x.short||x.name; }
+function viewFullProfile(){ state.leftDeep=true; backToProfile(); }
+function wireSection(){
+  screen.querySelectorAll('[data-multi]').forEach(g=>{
+    const key=g.dataset.multi, single=g.dataset.single==='1';
+    g.querySelectorAll('.mchip').forEach(b=>b.onclick=()=>{
+      const v=b.dataset.v;
+      if(single){ P[key]=v; }
+      else { const cur=P[key]||[]; P[key]= cur.includes(v)? cur.filter(x=>x!==v) : cur.concat(v); if(!P[key].length) P[key]=null; }
+      /* a category cannot be both stocked and "open next" */
+      if(key==='stocked' && P.addNext){ P.addNext=P.addNext.filter(x=>!(P.stocked||[]).includes(x)); if(!P.addNext.length) P.addNext=null; }
+      renderSection();
+    });
+  });
+  screen.querySelectorAll('[data-step]').forEach(g=>{
+    const key=g.dataset.step, min=+g.dataset.min, max=+g.dataset.max, inc=key==='monthly'?20:1;
+    g.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+      const base = P[key]===null ? (key==='monthly'?100:1) : P[key];
+      const next = P[key]===null ? base : base + (+b.dataset.d)*inc;
+      P[key]=Math.max(min,Math.min(max,next));
+      renderSection();
+    });
+  });
+  screen.querySelectorAll('[data-sw]').forEach(b=>b.onclick=()=>{ P[b.dataset.sw]=!P[b.dataset.sw]; renderSection(); });
+}
+function backToProfile(){ state.screen='profile'; render(); }
+function finishProfile(){ state.screen='changed'; render(); toast('Profile saved · app updated'); }
+
+/* ---------- 4. what changed ---------- */
+function renderChanged(){
+  const T=TRIG();
+  const mc=matchedConcerns(), om=orderedModules(), tiles=afterTiles();
+  const concernPills=CONCERNS.map(c=>{
+    const on=mc.some(m=>m.k===c.k);
+    return `<span class="pill2 ${on?'on':'off'}">${c.l}</span>`;
+  }).join('');
+  const modRows=om.on.map((m,i)=>`<div class="ordrow"><span class="on2">${i+1}</span><span>${m.n}</span><span class="otag">${i===0?'Next up':'Queued'}</span></div>`).join('')
+    + om.off.map(m=>`<div class="ordrow dim"><span class="on2">·</span><span>${m.n}</span><span class="otag">Not your mix</span></div>`).join('');
+  /* she can reach this screen having answered only what the text asked for.
+     Where an input is still missing, say so — do not claim a narrowing we
+     have no basis for. */
+  const hasProcs=(P.offered||[]).length>0;
+  const hasCats=(P.addNext||[]).length>0 || (P.stocked||[]).length>3;
+  const unlock = state.trig==='payout' ? `<div class="unlock">
+      <div class="ul">Released tonight</div><div class="amt">$4,180</div>
+      <div class="us">August practice share, held pending confirmation. Both boxes are now ticked, so it goes out in tonight&rsquo;s run.</div></div>` : '';
+  screen.innerHTML=statusBar()+`<div class="detail fade">
+      <div class="dhead"><button class="back" onclick="backToProfile()">${BACK}</button>
+        <div class="dt">What changed<small>Computed from what you entered</small></div></div>
+      <div class="dbody">
+        <p>${(pct()<100 && T.hubNotePartial) ? T.hubNotePartial : T.hubNote}</p>
+        ${unlock}
+        <div class="diff" style="animation-delay:.04s">
+          <h4><span class="dic">${ic('grid')}</span>Your 360° module grid</h4>
+          <div class="wasnow"><span class="was">Generic six</span><span class="arw">→</span><span class="now">${hasProcs?'Built from your mix':'Reordered by what you confirmed'}</span></div>
+          <div class="gridlab">Before</div>
+          <div class="minitiles before">${GENERIC_TILES.map(t=>`<div class="mt2">${t}</div>`).join('')}</div>
+          <div class="gridlab">After</div>
+          <div class="minitiles">${tiles.map(t=>`<div class="mt2 ${GENERIC_TILES.includes(t)?'':'newin'}">${t}</div>`).join('')}</div>
+        </div>
+        <div class="diff" style="animation-delay:.1s">
+          <h4><span class="dic">${ic('target')}</span>Regimen Builder</h4>
+          ${hasProcs
+            ? `<div class="wasnow"><span class="was">13 concerns, all of them</span><span class="arw">→</span><span class="now">${mc.length} you actually treat</span></div>
+               <div class="pillrow">${concernPills}</div>
+               <p style="margin-top:9px">Struck-through concerns depend on procedures you did not select. They stop appearing in the picker.</p>`
+            : `<div class="wasnow"><span class="was">13 concerns</span><span class="arw">→</span><span class="now">still 13</span></div>
+               <p style="margin-top:9px">We still don&rsquo;t know which procedures you perform, so the picker stays exactly as it was. Add them and this list narrows to what you actually treat.</p>`}
+        </div>
+        <div class="diff" style="animation-delay:.16s">
+          <h4><span class="dic">${ic('cap')}</span>Training order</h4>
+          ${(hasProcs||hasCats)
+            ? `<div class="wasnow"><span class="was">Catalog order</span><span class="arw">→</span><span class="now">Your mix first</span></div>${modRows}`
+            : `<div class="wasnow"><span class="was">Catalog order</span><span class="arw">→</span><span class="now">unchanged</span></div>
+               <p style="margin-top:9px">Training reorders off your procedures and categories. Neither is on file yet, so this stays in catalog order.</p>`}
+        </div>
+        ${stillOpenHTML()}
+        <div class="cta solid" style="margin:14px 0 0" onclick="state.screen='handoff';render()">Open Practice 360°</div>
+        <div class="src">Every line on this screen is derived from your entries, not scripted &mdash; including the parts that say nothing changed. Change an answer and this screen changes with it.</div>
+      </div></div>`;
+}
+
+/* ---------- 5. handoff ---------- */
+function stillOpenHTML(){
+  const open=sections().filter(x=>!secDone(x));
+  if(!open.length) return '';
+  return `<div class="diff" style="animation-delay:.22s">
+    <h4><span class="dic">${ic('info')}</span>Still on the table · ${pct()}% complete</h4>
+    <p>You gave us what the text asked for. These are the ones we did not ask about yet, and what each would sharpen.</p>
+    ${open.map(x=>`<div class="ordrow dim hint"><span class="on2">+</span><span class="oname">${x.name}</span>
+        <span class="otag">${UNLOCKS[x.id]}</span></div>`).join('')}
+    <div class="cta" style="margin:12px 0 0;padding:10px" onclick="state.guided=false;state.leftDeep=true;backToProfile()">Finish the rest</div>
+  </div>`;
+}
+
+function renderHandoff(){
+  const tiles=afterTiles();
+  screen.innerHTML=statusBar()+brandBar(`<div class="appbar-row"><span class="prov-pill">Practice Partner</span>
+      <div style="display:flex;gap:8px"><button class="icon-btn" title="Text size" onclick="toggleFont()">${TT}</button></div></div>
+    <div class="specialty"><span class="d"></span>${P.specialty} · Bellevue, WA · Profile ${pct()}%</div>`)+`
+    <div class="body fade"><div class="pwrap">
+      <div class="hoff">
+        <div class="hg"><div class="av2">EV</div><div><b>Good morning — Dr. Elena Voss</b><span>${pct()===100?'Profile complete · protocols now matched':`Profile ${pct()}% · matched to what you told us`}</span></div></div>
+        <div class="sec" style="margin:16px 0 8px;padding:0">360° Modules · yours</div>
+        <div class="minitiles">${tiles.map(t=>`<div class="mt2 ${GENERIC_TILES.includes(t)?'':'newin'}">${t}</div>`).join('')}</div>
+        <div class="src" style="margin-top:13px">Your profile is now the account. <b>Practice 360°</b> opens on the grid above, the Regimen Builder narrows to what you perform, and training queues in your order.</div>
+      </div>
+      <div class="cta solid" style="margin:14px 0 0" onclick="enterApp()">Continue to Practice 360°</div>
+      <div class="cta" style="margin:9px 0 0" onclick="restart()">&#8634; Run it again</div>
+    </div></div>`;
+}
+
+/* ---------- helpers ---------- */
+function toggleFont(){
+  state.fontStep=(state.fontStep+1)%FONT_STEPS.length;
+  document.documentElement.style.setProperty('--fs',FONT_STEPS[state.fontStep]);
+  render(); toast(FONT_LABELS[state.fontStep]+' · '+Math.round(FONT_STEPS[state.fontStep]*100)+'%');
+}
+let toastT=null;
+/* the toast lives on .phone, not .screen, so a re-render can't wipe it mid-message */
+function toast(msg){
+  let el=document.querySelector('.toast');
+  if(!el){ el=document.createElement('div'); el.className='toast'; document.querySelector('.phone').appendChild(el); }
+  /* sit above whatever bottom bar this screen happens to have */
+  const bar=document.querySelector('.composer,.savebar,.tabbar');
+  el.style.bottom=((bar?bar.getBoundingClientRect().height:0)+52)+'px';
+  el.textContent=msg; el.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove('show'),1900);
+}
+
+/* ============================================================ THE SEAM
+   enterApp(): the profile becomes the account and Practice 360° opens.
+   openProfileFromApp(): the app can send her back to fix the profile.
+   applyAndReturn(): the profile hub's back button re-derives the app. */
+function stampNow(){ const c=TRIG().clock; let t=c[0]*60+c[1]+clockMin; const h=Math.floor(t/60)%24,m=t%60; return `${(h%12)||12}:${String(m).padStart(2,'0')} ${h<12?'AM':'PM'}`; }
+function enterApp(){
+  clearTimers(); closeCalSheet();
+  state.profileApplied=true; state.appliedAt=stampNow(); state.fromApp=false;
+  aiLog=[]; navStack=['role']; tileSwap=true;
+  Object.assign(navState,{concern:null,history:'first',downtime:'low',plan:'single'});
+  state.screen='hub'; render();
+  toast('Profile applied · Practice 360° rebuilt');
+}
+function openProfileFromApp(){
+  closeCalSheet();
+  Object.assign(state,{fromApp:true,guided:false,leftDeep:true,landedOn:null,sec:null});
+  state.screen='profile'; render();
+}
+function profileTouched(){ return JSON.stringify(P)!==JSON.stringify(freshProfile()); }
+/* the header button on the profile hub. If she has changed anything, the app re-derives
+   from it; if the profile is untouched, the app opens as it would without one. */
+function goToApp(){
+  closeCalSheet(); clearTimers();
+  if(profileTouched()){ applyAndReturn(); return; }
+  state.fromApp=false; navStack=['role']; tileSwap=true; state.screen='hub'; render();
+  toast('Practice 360° · profile not applied yet');
+}
+function applyAndReturn(){
+  state.profileApplied=true; state.appliedAt=stampNow(); state.fromApp=false;
+  tileSwap=true; navStack=['role']; state.screen='hub'; render();
+  toast('Profile saved · app updated');
+}
+
+/* ---------- resets ---------- */
+function freshRun(){
+  clearTimers(); closeCalSheet(); P=freshProfile(); mlog=[]; clockMin=0; aiLog=[]; navStack=[]; calSelected=null;
+  Object.assign(navState,{concern:null,history:'first',downtime:'low',plan:'single'});
+  Object.assign(state,{sec:null,node:null,playing:false,optedOut:false,guided:false,leftDeep:false,landedOn:null,
+                       profileApplied:false,appliedAt:null,fromApp:false,_detailId:null});
+  seedCalendar();
+}
+/* Restart from the text: the whole story, from the SMS, on the selected trigger */
+function restart(){ freshRun(); state.screen='messages'; render(); }
+/* Skip to Practice 360°: the app on its own, with no profile applied, so the
+   difference a completed profile makes is visible from the other direction */
+function skipToApp(){ freshRun(); state.screen='role'; render(); }
+
+/* ---------- demo setup (phone only build) ----------
+   The desktop console is gone. Its controls live at the foot of the
+   Switch role screen: account stage, and restarting from any of the
+   three texts. syncConsole/syncJourney stay as no-ops so existing calls work. */
+function syncConsole(){}
+function syncJourney(){}
+function flashPhone(){}
+function setSeg(k){
+  closeCalSheet(); state.seg=k; aiLog=[]; seedCalendar(); calSelected=null;
+  render(); toast('Account stage · '+SEG[k].name.split(' · ')[0]);
+}
+function setTrig(k){ state.trig=k; restart(); }
+function demoSetupHTML(){
+  const segs=[['champ','Champion'],['growth','Growth'],['risk','At-Risk'],['new','New Account']];
+  const trigs=[['gap','Profile gap'],['payout','Payout on hold'],['launch','New launch']];
+  return `<div class="demo-set">
+    <div class="dh">Demo setup</div>
+    <div class="dl">Account stage</div>
+    <div class="dchips">${segs.map(([k,l])=>`<button class="chip seg" data-seg="${k}" aria-pressed="${state.seg===k}" onclick="setSeg('${k}')">${l}</button>`).join('')}</div>
+    <div class="dl">Restart from a text</div>
+    <div class="dchips">${trigs.map(([k,l])=>`<button class="chip" aria-pressed="${state.trig===k}" onclick="setTrig('${k}')">${l}</button>`).join('')}</div>
+    <p class="disc">Unaffiliated demonstration prototype. Not produced, reviewed, or endorsed by ALASTIN Skincare or Galderma. All people, practices, programs, and figures are fictional sample data. No drug claims are made or implied.</p>
+  </div>`;
+}
+
+P=freshProfile(); seedCalendar(); syncConsole(); render();
+</script>
+</body>
+</html>
